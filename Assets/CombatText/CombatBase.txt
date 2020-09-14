@@ -1,0 +1,11 @@
+[title=StartDefault]
+A %e approaches!
+[title=StartDefaultE]
+
+[title=ChooseAction]
+[question=0]What will you do?
+[choice]Advance
+[choice]Withdraw
+[choice]Attack
+[choice]Special
+[title=ChooseActionE]

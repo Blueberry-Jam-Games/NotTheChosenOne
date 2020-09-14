@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Tiles
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 88e0089481b27f3498890ea61801a4ad, type: 3}
+    - {fileID: 2800000, guid: fbd9c246053689e4e90ed5bf50123d9e, type: 3}
+    - {fileID: 21300000, guid: 87d4774666b3605448ae5c696ff04695, type: 3}
+    - {fileID: 2800000, guid: af4faa342587d404d9310de8d3776d5a, type: 3}
+    - {fileID: 2800000, guid: ba7a6a66b6ac897409c9de77d97ffd3a, type: 3}
+    - {fileID: 21300000, guid: 32d57805ecb010145990905cfcf5b28c, type: 3}
+    - {fileID: 21300000, guid: 5790fa16533f6274bbc9036ab78fd484, type: 3}
+    - {fileID: 2800000, guid: f6acaabccb78003459e41a05de4c21b5, type: 3}
+    - {fileID: 21300000, guid: fee27249ad050c34f84ad5e510621e88, type: 3}
+    - {fileID: 2800000, guid: ffbd1ca2371cee0419437c0a84bea7fc, type: 3}
+    - {fileID: 2800000, guid: 2a10a160297d6c14da3385939b6d968b, type: 3}
+    - {fileID: 21300000, guid: 810935d80e129584abe92f96b683f6c2, type: 3}
+    totalSpriteSurfaceArea: 12288
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 2a10a160297d6c14da3385939b6d968b, type: 3}
+  - {fileID: 21300000, guid: ffbd1ca2371cee0419437c0a84bea7fc, type: 3}
+  - {fileID: 21300000, guid: af4faa342587d404d9310de8d3776d5a, type: 3}
+  - {fileID: 21300000, guid: 88e0089481b27f3498890ea61801a4ad, type: 3}
+  - {fileID: 21300000, guid: 32d57805ecb010145990905cfcf5b28c, type: 3}
+  - {fileID: 21300000, guid: 5790fa16533f6274bbc9036ab78fd484, type: 3}
+  - {fileID: 21300000, guid: fbd9c246053689e4e90ed5bf50123d9e, type: 3}
+  - {fileID: 21300000, guid: 87d4774666b3605448ae5c696ff04695, type: 3}
+  - {fileID: 21300000, guid: ba7a6a66b6ac897409c9de77d97ffd3a, type: 3}
+  - {fileID: 21300000, guid: 810935d80e129584abe92f96b683f6c2, type: 3}
+  - {fileID: 21300000, guid: fee27249ad050c34f84ad5e510621e88, type: 3}
+  - {fileID: 21300000, guid: f6acaabccb78003459e41a05de4c21b5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - leaves
+  - bricks
+  - grass_path_top
+  - grass
+  - oak_door_top
+  - oak_log
+  - grass_block_side
+  - grass_path_side
+  - oak_door_bottom
+  - dirt
+  - oak_planks
+  - oak_log_top
+  m_Tag: Tiles
+  m_IsVariant: 0
