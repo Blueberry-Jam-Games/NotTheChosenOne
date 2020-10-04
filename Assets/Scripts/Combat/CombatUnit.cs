@@ -4,6 +4,89 @@ using UnityEngine;
 
 public class CombatUnit : MonoBehaviour
 {
-    public string name;
+    public Facing direction;
+    public string unitName;
     public int atk, def, acc;
+    public int hp, maxHP;
+    protected SpriteRenderer sp;
+    protected HealthBar hpBar;
+
+    public void Start()
+    {
+        sp = GetComponent<SpriteRenderer>();
+        hp = maxHP;
+    }
+
+    public void ProvideHPBar(HealthBar bar)
+    {
+        hpBar = bar;
+    }
+
+    public void InflictDamage(CombatUnit source, int attackPower)
+    {
+        Debug.Log("InflictDamage called");
+        int damage = (source.atk * attackPower) - def;
+        hp -= damage;
+        if (hp < 0) hp = 0;
+        Debug.Log("Starting hp bar");
+        hpBar.DealDamage(hp);
+    }
+
+    public void Advance()
+    {
+        if (direction == Facing.FOREWARDS)
+        {
+            MoveIn();
+        }
+        else if (direction == Facing.BACKWARDS)
+        {
+            MoveOut();
+        }
+    }
+
+    public void Retreat()
+    {
+        if (direction == Facing.FOREWARDS)
+        {
+            MoveOut();
+        }
+        else if (direction == Facing.BACKWARDS)
+        {
+            MoveIn();
+        }
+    }
+
+    protected void MoveIn()
+    {
+        int newSortOrder = sp.sortingOrder;
+        newSortOrder--;
+        if(newSortOrder < 0)
+        {
+            //Flee
+        }
+        else
+        {
+            sp.sortingOrder = newSortOrder;
+        }
+    }
+
+    protected void MoveOut()
+    {
+        int newSortOrder = sp.sortingOrder;
+        newSortOrder++;
+        if (newSortOrder > 4)
+        {
+            //Flee
+        }
+        else
+        {
+            sp.sortingOrder = newSortOrder;
+        }
+    }
+}
+
+public enum Facing
+{
+    FOREWARDS,
+    BACKWARDS
 }

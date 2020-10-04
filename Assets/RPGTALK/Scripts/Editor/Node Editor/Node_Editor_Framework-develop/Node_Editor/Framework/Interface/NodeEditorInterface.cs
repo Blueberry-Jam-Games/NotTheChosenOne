@@ -13,55 +13,57 @@ using RPGTALK.Nodes;
 
 namespace NodeEditorFramework.Standard
 {
-	public class NodeEditorInterface
-	{
-		public NodeEditorUserCache canvasCache;
-		public Action<GUIContent> ShowNotificationAction;
+    public class NodeEditorInterface
+    {
+        public NodeEditorUserCache canvasCache;
+        public event Action<GUIContent> ShowNotificationAction;
 
-		// GUI
-		public string sceneCanvasName = "";
-		public float toolbarHeight = 17;
+        // GUI
+        public string sceneCanvasName = "";
+        public float toolbarHeight = 17;
 
-		// Modal Panel
-		public bool showModalPanel;
-		public Rect modalPanelRect = new Rect(20, 50, 250, 70);
-		public Action modalPanelContent;
+        // Modal Panel
+        public bool showModalPanel;
+        public Rect modalPanelRect = new Rect(20, 50, 250, 70);
+        public Action modalPanelContent;
 
-		// IO Format modal panel
-		private ImportExportFormat IOFormat;
-		private object[] IOLocationArgs;
-		private delegate bool? DefExportLocationGUI(string canvasName, ref object[] locationArgs);
-		private delegate bool? DefImportLocationGUI(ref object[] locationArgs);
-		private DefImportLocationGUI ImportLocationGUI;
-		private DefExportLocationGUI ExportLocationGUI;
+        // IO Format modal panel
+        private ImportExportFormat IOFormat;
+        private object[] IOLocationArgs;
+        private delegate bool? DefExportLocationGUI(string canvasName, ref object[] locationArgs);
+        private delegate bool? DefImportLocationGUI(ref object[] locationArgs);
+        private DefImportLocationGUI ImportLocationGUI;
+        private DefExportLocationGUI ExportLocationGUI;
 
-		public void ShowNotification(GUIContent message)
-		{
-			if (ShowNotificationAction != null)
-				ShowNotificationAction(message);
-		}
+        public void ShowNotification(GUIContent message)
+        {
+            if (ShowNotificationAction != null)
+                ShowNotificationAction(message);
+        }
 
-#region GUI
+        #region GUI
 
-		public void DrawToolbarGUI(Rect rect)
-		{
-			rect.height = toolbarHeight;
-			GUILayout.BeginArea (rect, NodeEditorGUI.toolbar);
-			GUILayout.BeginHorizontal();
-			float curToolbarHeight = 0;
+        public void DrawToolbarGUI(Rect rect)
+        {
+            rect.height = toolbarHeight;
+            GUILayout.BeginArea(rect, NodeEditorGUI.toolbar);
+            GUILayout.BeginHorizontal();
+            float curToolbarHeight = 0;
 
             //RPGTalk removed to make it more simple to use only RPGTalk functions.
 
             if (GUILayout.Button("New File", NodeEditorGUI.toolbarButton, GUILayout.Width(70)))
             {
-                if (EditorUtility.DisplayDialog("Are you sure you want to create a new canvas?", "Any unsaved changes on this one will be lost", "I'm sure", "Hold up...")){
+                if (EditorUtility.DisplayDialog("Are you sure you want to create a new canvas?", "Any unsaved changes on this one will be lost", "I'm sure", "Hold up..."))
+                {
                     canvasCache.NewNodeCanvas(typeof(RPGTalkNodeCanvas));
                 }
             }
 
             if (GUILayout.Button("Load TXT", NodeEditorGUI.toolbarButton, GUILayout.Width(70)))
             {
-                if (EditorUtility.DisplayDialog("Are you sure you want to load a new canvas?", "Any unsaved changes on this one will be lost", "I'm sure", "Hold up...")){
+                if (EditorUtility.DisplayDialog("Are you sure you want to load a new canvas?", "Any unsaved changes on this one will be lost", "I'm sure", "Hold up..."))
+                {
                     LoadTXTFile();
                 }
             }
@@ -129,13 +131,13 @@ namespace NodeEditorFramework.Standard
 				// Show dropdown
 				menu.Show(new Vector2(5, toolbarHeight));
 			}*/
-			curToolbarHeight = Mathf.Max(curToolbarHeight, GUILayoutUtility.GetLastRect().yMax);
+            curToolbarHeight = Mathf.Max(curToolbarHeight, GUILayoutUtility.GetLastRect().yMax);
 
-			GUILayout.Space(10);
-			GUILayout.FlexibleSpace();
+            GUILayout.Space(10);
+            GUILayout.FlexibleSpace();
 
             //RPGTalk removed to make it more simple
-			/*GUILayout.Label(new GUIContent("" + canvasCache.nodeCanvas.saveName + " (" + (canvasCache.nodeCanvas.livesInScene ? "Scene Save" : "Asset Save") + ")", 
+            /*GUILayout.Label(new GUIContent("" + canvasCache.nodeCanvas.saveName + " (" + (canvasCache.nodeCanvas.livesInScene ? "Scene Save" : "Asset Save") + ")", 
 											"Opened Canvas path: " + canvasCache.nodeCanvas.savePath), NodeEditorGUI.toolbarLabel);
 			GUILayout.Label("Type: " + canvasCache.typeData.DisplayString, NodeEditorGUI.toolbarLabel);
 			curToolbarHeight = Mathf.Max(curToolbarHeight, GUILayoutUtility.GetLastRect().yMax);
@@ -147,62 +149,62 @@ namespace NodeEditorFramework.Standard
 				canvasCache.nodeCanvas.Validate();
 			} */
 #if !UNITY_EDITOR
-			GUILayout.Space(5);
-			if (GUILayout.Button("Quit", NodeEditorGUI.toolbarButton, GUILayout.Width(100)))
-				Application.Quit ();
+            GUILayout.Space(5);
+            if (GUILayout.Button("Quit", NodeEditorGUI.toolbarButton, GUILayout.Width(100)))
+                Application.Quit();
 #endif
-			curToolbarHeight = Mathf.Max(curToolbarHeight, GUILayoutUtility.GetLastRect().yMax);
-			GUI.backgroundColor = Color.white;
+            curToolbarHeight = Mathf.Max(curToolbarHeight, GUILayoutUtility.GetLastRect().yMax);
+            GUI.backgroundColor = Color.white;
 
-			GUILayout.EndHorizontal();
-			GUILayout.EndArea();
-			if (Event.current.type == EventType.Repaint)
-				toolbarHeight = curToolbarHeight;
-		}
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
+            if (Event.current.type == EventType.Repaint)
+                toolbarHeight = curToolbarHeight;
+        }
 
-		private void SaveSceneCanvasPanel()
-		{
-			GUILayout.Label("Save Canvas To Scene");
+        private void SaveSceneCanvasPanel()
+        {
+            GUILayout.Label("Save Canvas To Scene");
 
-			GUILayout.BeginHorizontal();
-			sceneCanvasName = GUILayout.TextField(sceneCanvasName, GUILayout.ExpandWidth(true));
-			bool overwrite = NodeEditorSaveManager.HasSceneSave(sceneCanvasName);
-			if (overwrite)
-				GUILayout.Label(new GUIContent("!!!", "A canvas with the specified name already exists. It will be overwritten!"), GUILayout.ExpandWidth(false));
-			GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            sceneCanvasName = GUILayout.TextField(sceneCanvasName, GUILayout.ExpandWidth(true));
+            bool overwrite = NodeEditorSaveManager.HasSceneSave(sceneCanvasName);
+            if (overwrite)
+                GUILayout.Label(new GUIContent("!!!", "A canvas with the specified name already exists. It will be overwritten!"), GUILayout.ExpandWidth(false));
+            GUILayout.EndHorizontal();
 
-			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("Cancel"))
-				showModalPanel = false;
-			if (GUILayout.Button(new GUIContent(overwrite ? "Overwrite" : "Save", "Save the canvas to the Scene")))
-			{
-				showModalPanel = false;
-				if (!string.IsNullOrEmpty (sceneCanvasName))
-					canvasCache.SaveSceneNodeCanvas(sceneCanvasName);
-			}
-			GUILayout.EndHorizontal();
-		}
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Cancel"))
+                showModalPanel = false;
+            if (GUILayout.Button(new GUIContent(overwrite ? "Overwrite" : "Save", "Save the canvas to the Scene")))
+            {
+                showModalPanel = false;
+                if (!string.IsNullOrEmpty(sceneCanvasName))
+                    canvasCache.SaveSceneNodeCanvas(sceneCanvasName);
+            }
+            GUILayout.EndHorizontal();
+        }
 
-		public void DrawModalPanel()
-		{
-			if (showModalPanel)
-			{
-				if (modalPanelContent == null)
-					return;
-				GUILayout.BeginArea(modalPanelRect, NodeEditorGUI.nodeBox);
-				modalPanelContent.Invoke();
-				GUILayout.EndArea();
-			}
-		}
+        public void DrawModalPanel()
+        {
+            if (showModalPanel)
+            {
+                if (modalPanelContent == null)
+                    return;
+                GUILayout.BeginArea(modalPanelRect, NodeEditorGUI.nodeBox);
+                modalPanelContent.Invoke();
+                GUILayout.EndArea();
+            }
+        }
 
-#endregion
+        #endregion
 
-#region Menu Callbacks
+        #region Menu Callbacks
 
-		private void NewNodeCanvas(Type canvasType)
-		{
-			canvasCache.NewNodeCanvas(canvasType);
-		}
+        private void NewNodeCanvas(System.Type canvasType)
+        {
+            canvasCache.NewNodeCanvas(canvasType);
+        }
 
 #if UNITY_EDITOR
 
@@ -897,82 +899,82 @@ namespace NodeEditorFramework.Standard
 		}
 #endif
 
-		private void LoadSceneCanvasCallback(object canvas)
-		{
-			canvasCache.LoadSceneNodeCanvas((string)canvas);
-			sceneCanvasName = canvasCache.nodeCanvas.name;
-		}
+        private void LoadSceneCanvasCallback(object canvas)
+        {
+            canvasCache.LoadSceneNodeCanvas((string)canvas);
+            sceneCanvasName = canvasCache.nodeCanvas.name;
+        }
 
-		private void SaveSceneCanvasCallback()
-		{
-			modalPanelContent = SaveSceneCanvasPanel;
-			showModalPanel = true;
-		}
+        private void SaveSceneCanvasCallback()
+        {
+            modalPanelContent = SaveSceneCanvasPanel;
+            showModalPanel = true;
+        }
 
-		private void ImportCanvasCallback(string formatID)
-		{
-			IOFormat = ImportExportManager.ParseFormat(formatID);
-			if (IOFormat.RequiresLocationGUI)
-			{
-				ImportLocationGUI = IOFormat.ImportLocationArgsGUI;
-				modalPanelContent = ImportCanvasGUI;
-				showModalPanel = true;
-			}
-			else if (IOFormat.ImportLocationArgsSelection(out IOLocationArgs))
-				canvasCache.SetCanvas(ImportExportManager.ImportCanvas(IOFormat, IOLocationArgs));
-		}
+        private void ImportCanvasCallback(string formatID)
+        {
+            IOFormat = ImportExportManager.ParseFormat(formatID);
+            if (IOFormat.RequiresLocationGUI)
+            {
+                ImportLocationGUI = IOFormat.ImportLocationArgsGUI;
+                modalPanelContent = ImportCanvasGUI;
+                showModalPanel = true;
+            }
+            else if (IOFormat.ImportLocationArgsSelection(out IOLocationArgs))
+                canvasCache.SetCanvas(ImportExportManager.ImportCanvas(IOFormat, IOLocationArgs));
+        }
 
-		private void ImportCanvasGUI()
-		{
-			if (ImportLocationGUI != null)
-			{
-				bool? state = ImportLocationGUI(ref IOLocationArgs);
-				if (state == null)
-					return;
+        private void ImportCanvasGUI()
+        {
+            if (ImportLocationGUI != null)
+            {
+                bool? state = ImportLocationGUI(ref IOLocationArgs);
+                if (state == null)
+                    return;
 
-				if (state == true)
-					canvasCache.SetCanvas(ImportExportManager.ImportCanvas(IOFormat, IOLocationArgs));
+                if (state == true)
+                    canvasCache.SetCanvas(ImportExportManager.ImportCanvas(IOFormat, IOLocationArgs));
 
-				ImportLocationGUI = null;
-				modalPanelContent = null;
-				showModalPanel = false;
-			}
-			else
-				showModalPanel = false;
-		}
+                ImportLocationGUI = null;
+                modalPanelContent = null;
+                showModalPanel = false;
+            }
+            else
+                showModalPanel = false;
+        }
 
-		private void ExportCanvasCallback(string formatID)
-		{
-			IOFormat = ImportExportManager.ParseFormat(formatID);
-			if (IOFormat.RequiresLocationGUI)
-			{
-				ExportLocationGUI = IOFormat.ExportLocationArgsGUI;
-				modalPanelContent = ExportCanvasGUI;
-				showModalPanel = true;
-			}
-			else if (IOFormat.ExportLocationArgsSelection(canvasCache.nodeCanvas.saveName, out IOLocationArgs))
-				ImportExportManager.ExportCanvas(canvasCache.nodeCanvas, IOFormat, IOLocationArgs);
-		}
+        private void ExportCanvasCallback(string formatID)
+        {
+            IOFormat = ImportExportManager.ParseFormat(formatID);
+            if (IOFormat.RequiresLocationGUI)
+            {
+                ExportLocationGUI = IOFormat.ExportLocationArgsGUI;
+                modalPanelContent = ExportCanvasGUI;
+                showModalPanel = true;
+            }
+            else if (IOFormat.ExportLocationArgsSelection(canvasCache.nodeCanvas.saveName, out IOLocationArgs))
+                ImportExportManager.ExportCanvas(canvasCache.nodeCanvas, IOFormat, IOLocationArgs);
+        }
 
-		private void ExportCanvasGUI()
-		{
-			if (ExportLocationGUI != null)
-			{
-				bool? state = ExportLocationGUI(canvasCache.nodeCanvas.saveName, ref IOLocationArgs);
-				if (state == null)
-					return;
+        private void ExportCanvasGUI()
+        {
+            if (ExportLocationGUI != null)
+            {
+                bool? state = ExportLocationGUI(canvasCache.nodeCanvas.saveName, ref IOLocationArgs);
+                if (state == null)
+                    return;
 
-				if (state == true)
-					ImportExportManager.ExportCanvas(canvasCache.nodeCanvas, IOFormat, IOLocationArgs);
+                if (state == true)
+                    ImportExportManager.ExportCanvas(canvasCache.nodeCanvas, IOFormat, IOLocationArgs);
 
-				ImportLocationGUI = null;
-				modalPanelContent = null;
-				showModalPanel = false;
-			}
-			else
-				showModalPanel = false;
-		}
+                ImportLocationGUI = null;
+                modalPanelContent = null;
+                showModalPanel = false;
+            }
+            else
+                showModalPanel = false;
+        }
 
-#endregion
-	}
+        #endregion
+    }
 }

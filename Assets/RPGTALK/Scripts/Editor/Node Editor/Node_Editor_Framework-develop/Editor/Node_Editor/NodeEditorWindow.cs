@@ -124,7 +124,7 @@ namespace NodeEditorFramework.Standard
 			{ // Setup editor interface
 				editorInterface = new NodeEditorInterface();
 				editorInterface.canvasCache = canvasCache;
-				editorInterface.ShowNotificationAction = ShowNotification;
+				editorInterface.ShowNotificationAction += ShowNotification;
 			}
 		}
 
