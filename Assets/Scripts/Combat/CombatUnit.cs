@@ -32,6 +32,17 @@ public class CombatUnit : MonoBehaviour
         hpBar.DealDamage(hp);
     }
 
+    public bool IsDead()
+    {
+        return hp == 0;
+    }
+
+    public void HandleKill()
+    {
+        Destroy(hpBar.gameObject);
+        Destroy(this.gameObject);
+    }
+
     public void Advance()
     {
         if (direction == Facing.FOREWARDS)

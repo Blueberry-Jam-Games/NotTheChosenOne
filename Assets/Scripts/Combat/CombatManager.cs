@@ -1,6 +1,7 @@
 ﻿using RPGTALK.Helper;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -145,9 +146,53 @@ public class CombatManager : MonoBehaviour
             if (turnActions[0].IsDone())
             {
                 turnActions.RemoveAt(0);
+                CheckKills();
                 ACTION_STATE = START_NEXT;
             }
         }
+    }
+
+    private void CheckKills()
+    {
+        for(int i = 0; i < player.Count; i++)
+        {
+            if(player[i].IsDead())
+            {
+                CombatUnit dead = player[i];
+                player.RemoveAt(i);
+                i--;
+                dead.HandleKill();
+            }
+        }
+        for (int i = 0; i < enemy.Count; i++)
+        {
+            if (enemy[i].IsDead())
+            {
+                CombatUnit dead = enemy[i];
+                enemy.RemoveAt(i);
+                i--;
+                dead.HandleKill();
+            }
+        }
+        CheckDone();
+    }
+
+    private void CheckDone()
+    {
+        if(player.Count == 0)
+        {
+            Debug.Log("Game Over");
+        } 
+        else if(enemy.Count == 0)
+        {
+            Debug.Log("Win");
+            PlayerWin();
+        }
+    }
+
+    private void PlayerWin()
+    {
+
     }
 
     private void SortTurnActions()
