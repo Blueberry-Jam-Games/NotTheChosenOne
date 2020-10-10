@@ -1,7 +1,6 @@
 ﻿using RPGTALK.Helper;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -182,17 +181,25 @@ public class CombatManager : MonoBehaviour
         if(player.Count == 0)
         {
             Debug.Log("Game Over");
+            STATE = END;
         } 
         else if(enemy.Count == 0)
         {
             Debug.Log("Win");
+            STATE = END;
             PlayerWin();
         }
     }
 
     private void PlayerWin()
     {
+        dialogue.callback.AddListener(EndTextEnd);
+        dialogue.NewTalk("WinHunt", "WinHuntE");
+    }
 
+    public void EndTextEnd()
+    {
+        Debug.Log("Return to overworld.");
     }
 
     private void SortTurnActions()
@@ -256,8 +263,10 @@ public class CombatManager : MonoBehaviour
                     turnActions.Add(new ActionAttack(player[0], 150, this)); //TODO Speed
                     break; //Attack
                 case 1:
+                    turnActions.Add(new ActionGuard(player[0], 150, this));
                     break; //Guard
                 case 2:
+                    turnActions.Add(new ActionPray(player[0], 150, this));
                     break; //Pray
                 case 3:
                     break; //Sub-menue

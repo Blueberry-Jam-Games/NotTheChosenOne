@@ -21,3 +21,8 @@ A %e approaches!
 [title=UseSkill]
 %s
 [title=UseSkillE]
+
+[title=WinHunt]
+You Hunted Down a %e!
+Aptitude Increased!
+[title=WinHuntE]
