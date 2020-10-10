@@ -3,9 +3,21 @@ A %e approaches!
 [title=StartDefaultE]
 
 [title=ChooseAction]
-[question=0]What will you do?
+[question=action]What will you do?
+[choice]Skill [newtalk start=ChooseSkill break=ChooseSkillE]
+[choice]Inventory
 [choice]Advance
 [choice]Withdraw
-[choice]Attack
-[choice]Special
 [title=ChooseActionE]
+
+[title=ChooseSkill]
+[question=skill]Choose a skill:
+[choice]Attack
+[choice]Guard
+[choice]Pray
+[choice]Back [newtalk start=ChooseAction break=ChooseActionE]
+[title=ChooseSkillE]
+
+[title=UseSkill]
+%s
+[title=UseSkillE]
