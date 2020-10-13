@@ -97,3 +97,21 @@ public class ActionWithdraw : CombatAction
         return user.unitName + " Retreated!";
     }
 }
+
+public class ActionNothing : CombatAction
+{
+    public ActionNothing(CombatUnit user, CombatManager mngr) : base(user, 0, mngr)
+    {
+
+    }
+
+    public override void Execute(RPGTalk dialogue)
+    {
+        actionDone = true;
+    }
+
+    public override string GetText()
+    {
+        return "";
+    }
+}

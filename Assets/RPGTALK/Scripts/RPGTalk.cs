@@ -1678,7 +1678,8 @@ public class RPGTalk : MonoBehaviour {
     IEnumerator SelectButton(Button button)
     {
         yield return new WaitForSeconds(0.3f);
-        button.Select();
+        if(button != null)
+            button.Select();
     }
 
 

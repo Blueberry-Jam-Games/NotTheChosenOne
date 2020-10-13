@@ -18,6 +18,14 @@ A %e approaches!
 [choice]Back [newtalk start=ChooseAction break=ChooseActionE]
 [title=ChooseSkillE]
 
+[title=ChooseFriend]
+[question=friendAction]What will %f do?
+[choice]Attack
+[choice]Guard
+[choice]Advance
+[choice]Withdraw
+[title=ChooseFriendE]
+
 [title=UseSkill]
 %s
 [title=UseSkillE]
