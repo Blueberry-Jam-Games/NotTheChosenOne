@@ -16,7 +16,15 @@ public class UnitFriend : CombatUnit
             switch(selection)
             {
                 case 0:
-                    return new ActionAttack(this, 50, cmRef); //TODO Speed
+                    if (cmRef.enemy.Count > 1)
+                    {
+                        DisplayActionTargeting(cmRef);
+                        return null;
+                    }
+                    else
+                    {
+                        return new ActionAttack(this, 0, 50, cmRef);
+                    }
                 case 1:
                     return new ActionGuard(this, 50, cmRef); //Speed
                 case 2:
@@ -27,6 +35,10 @@ public class UnitFriend : CombatUnit
                     Debug.LogError("Invalid selection for friend");
                     return new ActionNothing(this, cmRef); //Failsafe to prevent softlock
             }
+        }
+        else if (question == "target")
+        {
+            return new ActionAttack(this, selection, 50, cmRef);
         }
         Debug.LogError("Invalid choice for friend");
         return new ActionNothing(this, cmRef); //Failsafe to prevent softlock

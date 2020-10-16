@@ -105,6 +105,11 @@ public abstract class CombatUnit : MonoBehaviour
             sp.sortingOrder = newSortOrder;
         }
     }
+
+    protected void DisplayActionTargeting(CombatManager cmRef)
+    {
+        cmRef.CreateTalk("Target" + cmRef.enemy.Count);
+    }
 }
 
 public enum Facing

@@ -5,16 +5,28 @@ using UnityEngine;
 //Assume it's the player attacking (for now)
 public class ActionAttack : CombatAction
 {
-    public ActionAttack(CombatUnit user, int speed, CombatManager mngr) : base(user, speed, mngr)
-    {
 
+    private int target;
+    private int enemies;
+
+    public ActionAttack(CombatUnit user, int target, int speed, CombatManager mngr) : base(user, speed, mngr)
+    {
+        this.target = target;
+        this.enemies = mngr.enemy.Count;
     }
 
     public override void Execute(RPGTalk dialogue)
     {
-        CombatUnit cu = manager.enemy[0];
-        cu.InflictDamage(user, 10);
-        DisplayText(dialogue);
+        if (manager.enemy.Count != enemies)
+        {
+            DisplayTextAtTitle(dialogue, "ActionAttackFail");
+        }
+        else
+        {
+            DisplayTextAtTitle(dialogue, "ActionAttackSuccess");
+            CombatUnit cu = manager.enemy[target]; //TODO apply targeting
+            cu.InflictDamage(user, 10);
+        }
     }
 
     public override string GetText()

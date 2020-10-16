@@ -129,6 +129,24 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void RegsterCombatAction(CombatAction additionalAction, bool advance = true)
+    {
+        turnActions.Add(additionalAction);
+        if (advance)
+        {
+            choosingUnit++;
+            if (choosingUnit >= player.Count)
+            {
+                EnemyDecideActions();
+                STATE = BattleState.RUN;
+            }
+            else
+            {
+                CreateChooseActionDialogue();
+            }
+        }
+    }
+
     private void EnemyDecideActions()
     {
         foreach(CombatUnit op in enemy)
@@ -138,6 +156,12 @@ public class CombatManager : MonoBehaviour
                 turnActions.Add(ca);
         }
     }
+
+    public void CreateTalk(string title)
+    {
+        dialogue.NewTalk(title, title + "E");
+    }
+
     #endregion
 
     #region Execute Action Code
@@ -150,7 +174,14 @@ public class CombatManager : MonoBehaviour
             {
                 Debug.Log("Executing");
                 ACTION_STATE = ActionState.RUNNING;
-                turnActions[0].Execute(dialogue);
+                if (turnActions[0].StillValid())
+                {
+                    turnActions[0].Execute(dialogue);
+                }
+                else
+                {
+                    turnActions.RemoveAt(0);
+                }
             }
             else
             {
@@ -161,7 +192,12 @@ public class CombatManager : MonoBehaviour
         }
         else if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING)
         {
-            if (turnActions[0].IsDone())
+            if(turnActions.Count == 0)
+            {
+                CheckKills();
+                ACTION_STATE = ActionState.START_NEXT;
+            }
+            else if (turnActions[0].IsDone())
             {
                 turnActions.RemoveAt(0);
                 CheckKills();

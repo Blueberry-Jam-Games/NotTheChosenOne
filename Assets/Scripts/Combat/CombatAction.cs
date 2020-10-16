@@ -47,6 +47,13 @@ public abstract class CombatAction
         talkStore = dialogue;
     }
 
+    protected void DisplayTextAtTitle(RPGTalk dialogue, string title)
+    {
+        dialogue.callback.AddListener(TextEnd);
+        dialogue.NewTalk(title, title + "E");
+        talkStore = dialogue;
+    }
+
     public void TextEnd()
     {
         talkStore.callback.RemoveListener(TextEnd);
@@ -56,6 +63,11 @@ public abstract class CombatAction
 
     public abstract string GetText();
     public abstract void Execute(RPGTalk dialogue);
+
+    public bool StillValid()
+    {
+        return user != null && user.gameObject != null;
+    }
 }
 
 public class ActionAdvance : CombatAction

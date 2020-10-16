@@ -37,7 +37,17 @@ public class UnitPlayer : CombatUnit
             switch (selection)
             {
                 case 0:
-                    return new ActionAttack(this, 150, cmRef); //TODO Speed
+                    //return new ActionAttack(this, 150, cmRef); //TODO Speed
+                    //Targeting
+                    if (cmRef.enemy.Count > 1)
+                    {
+                        DisplayActionTargeting(cmRef);
+                        return null;
+                    } 
+                    else
+                    {
+                        return new ActionAttack(this, 0, 150, cmRef);
+                    }
                 case 1:
                     return new ActionGuard(this, 150, cmRef); //TODO Speed
                 case 2:
@@ -48,6 +58,10 @@ public class UnitPlayer : CombatUnit
                     Debug.LogError("Invalid choice for player");
                     return new ActionNothing(this, cmRef); //Failsafe to prevent softlock
             }
+        }
+        else if (question == "target")
+        {
+            return new ActionAttack(this, selection, 150, cmRef); //TODO Speed
         }
         else
         {
