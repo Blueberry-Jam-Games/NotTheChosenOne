@@ -171,14 +171,15 @@ public class CombatManager : MonoBehaviour
         {
             if (turnActions.Count > 0)
             {
-                Debug.Log("Executing");
-                ACTION_STATE = ActionState.RUNNING;
                 if (turnActions[0].StillValid())
                 {
+                    Debug.Log("Executing Next Action");
+                    ACTION_STATE = ActionState.RUNNING;
                     turnActions[0].Execute(dialogue);
                 }
                 else
                 {
+                    Debug.Log("Removing Invalid Entry");
                     turnActions.RemoveAt(0);
                 }
             }
@@ -191,6 +192,9 @@ public class CombatManager : MonoBehaviour
         }
         else if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING)
         {
+            //Debug.Log("Game Running and Action State running");
+            //Debug.Log("Actions count " + turnActions.Count);
+            //if (turnActions.Count != 0) Debug.Log("Turn Action 0 " + turnActions[0].GetText() + " done? = " + turnActions[0].IsDone());
             if(turnActions.Count == 0)
             {
                 CheckKills();
@@ -198,6 +202,7 @@ public class CombatManager : MonoBehaviour
             }
             else if (turnActions[0].IsDone())
             {
+                Debug.Log("Turn Action Done?");
                 turnActions.RemoveAt(0);
                 CheckKills();
                 ACTION_STATE = ActionState.START_NEXT;

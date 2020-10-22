@@ -50,14 +50,16 @@ public abstract class CombatAction
     protected void DisplayTextAtTitle(RPGTalk dialogue, string title)
     {
         dialogue.callback.AddListener(TextEnd);
+        Debug.Log("Displaying text at title " + title + " and registering listener");
         dialogue.NewTalk(title, title + "E");
         talkStore = dialogue;
     }
 
     public void TextEnd()
     {
-        talkStore.callback.RemoveListener(TextEnd);
+        Debug.Log("TextEnd Triggered");
         actionDone = true;
+        talkStore.callback.RemoveListener(TextEnd);
         talkStore = null;
     }
 
@@ -79,6 +81,7 @@ public class ActionAdvance : CombatAction
 
     public override void Execute(RPGTalk dialogue)
     {
+        Debug.Log("Executing Advance for " + user.unitName);
         user.Advance();
         DisplayText(dialogue);
     }

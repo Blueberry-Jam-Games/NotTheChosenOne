@@ -55,7 +55,7 @@ public class HealthBar : MonoBehaviour
         Debug.Log("Start anim coroutine");
         while(hp > hpTarget)
         {
-            Debug.Log("Anim Loop");
+            //Debug.Log("Anim Loop");
             hp--;
             display.value = hp;
             yield return null;

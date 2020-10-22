@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  unitName: Deer
+  unitName: DeerA
   atk: 0
   def: 5
   acc: 100
@@ -1855,7 +1855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  unitName: Deer
+  unitName: DeerB
   atk: 0
   def: 5
   acc: 100
