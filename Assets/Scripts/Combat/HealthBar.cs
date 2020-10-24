@@ -22,7 +22,7 @@ public class HealthBar : MonoBehaviour
     public void CreateBase(CombatUnit cu)
     {
         //Text title = GetComponentInChildren<Text>();
-        entName = cu.name;
+        entName = cu.unitName;
         maxHp = cu.maxHP;
         hp = cu.hp;
         StartCoroutine(InitializeLater());
@@ -32,9 +32,9 @@ public class HealthBar : MonoBehaviour
 
     private IEnumerator InitializeLater()
     {
-        Debug.Log("Waiting for frame");
+        Debug.Log("Health Bar Delay");
         yield return null;
-        Debug.Log("Recieved frame");
+        Debug.Log("Health Bar Complete");
         Text title = GetComponentInChildren<Text>();
         title.text = entName;
         display.maxValue = maxHp;
@@ -55,7 +55,7 @@ public class HealthBar : MonoBehaviour
         Debug.Log("Start anim coroutine");
         while(hp > hpTarget)
         {
-            Debug.Log("Anim Loop");
+            //Debug.Log("Anim Loop");
             hp--;
             display.value = hp;
             yield return null;

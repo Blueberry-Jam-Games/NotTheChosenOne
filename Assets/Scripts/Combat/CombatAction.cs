@@ -47,15 +47,29 @@ public abstract class CombatAction
         talkStore = dialogue;
     }
 
+    protected void DisplayTextAtTitle(RPGTalk dialogue, string title)
+    {
+        dialogue.callback.AddListener(TextEnd);
+        Debug.Log("Displaying text at title " + title + " and registering listener");
+        dialogue.NewTalk(title, title + "E");
+        talkStore = dialogue;
+    }
+
     public void TextEnd()
     {
-        talkStore.callback.RemoveListener(TextEnd);
+        Debug.Log("TextEnd Triggered");
         actionDone = true;
+        talkStore.callback.RemoveListener(TextEnd);
         talkStore = null;
     }
 
     public abstract string GetText();
     public abstract void Execute(RPGTalk dialogue);
+
+    public bool StillValid()
+    {
+        return user != null && user.gameObject != null;
+    }
 }
 
 public class ActionAdvance : CombatAction
@@ -67,6 +81,7 @@ public class ActionAdvance : CombatAction
 
     public override void Execute(RPGTalk dialogue)
     {
+        Debug.Log("Executing Advance for " + user.unitName);
         user.Advance();
         DisplayText(dialogue);
     }
@@ -95,5 +110,23 @@ public class ActionWithdraw : CombatAction
     public override string GetText()
     {
         return user.unitName + " Retreated!";
+    }
+}
+
+public class ActionNothing : CombatAction
+{
+    public ActionNothing(CombatUnit user, CombatManager mngr) : base(user, 0, mngr)
+    {
+
+    }
+
+    public override void Execute(RPGTalk dialogue)
+    {
+        actionDone = true;
+    }
+
+    public override string GetText()
+    {
+        return "";
     }
 }

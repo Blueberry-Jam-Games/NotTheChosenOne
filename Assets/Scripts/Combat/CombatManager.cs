@@ -5,33 +5,27 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-
-    public static readonly int BEGIN = 0;
-    public static readonly int CHOOSE = 1;
-    public static readonly int RUN = 2;
-    public static readonly int END = 3;
-
-    public static readonly int START_NEXT = 0;
-    public static readonly int RUNNING = 1;
-
     private RPGTalk dialogue;
     public List<CombatUnit> player;
     public List<CombatUnit> enemy;
 
     List<CombatAction> turnActions;
 
-    public int STATE = BEGIN;
-    public int ACTION_STATE = START_NEXT;
+    public BattleState STATE = BattleState.BEGIN;
+    public ActionState ACTION_STATE = ActionState.START_NEXT;
+
+    private int choosingUnit = 0;
 
     public GameObject playerHealthBase;
     public GameObject opponentHealthBase;
 
     public GameObject hpBarRef;
 
+    #region Battle Start Code
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Start cm");
+        Debug.Log("Start combat maager");
         GameObject dm = GameObject.FindGameObjectWithTag("TextboxManager");
         dialogue = dm.GetComponent<RPGTalk>();
 
@@ -50,6 +44,7 @@ public class CombatManager : MonoBehaviour
                 title += ", ";
             title += cu.unitName;
         }
+
         Debug.Log("Title configured " + title);
         RPGTalkVariable rtv = new RPGTalkVariable();
         rtv.variableName = "%e";
@@ -82,6 +77,7 @@ public class CombatManager : MonoBehaviour
         yield return null;
         Debug.Log("Recieved frame");
         dialogue.NewTalk("StartDefault", "StartDefaultE");
+        Debug.Log("Created StartDefault Dialogue");
     }
 
     public void NewTalkExists()
@@ -93,61 +89,176 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("Dialogue closed");
         dialogue.callback.RemoveListener(IntroTextEnd);
-        dialogue.NewTalk("ChooseAction", "ChooseActionE");
-        STATE = CHOOSE;
+        //dialogue.NewTalk("ChooseAction", "ChooseActionE"); //What goes here?
+        BeginChooseState();
+    }
+    #endregion
+
+    #region Choose Action Code
+    private void BeginChooseState()
+    {
+        choosingUnit = 0;
+        STATE = BattleState.CHOOSE;
+        CreateChooseActionDialogue();
+    }
+
+    private void CreateChooseActionDialogue()
+    {
+        CombatUnit cu = player[choosingUnit];
+        string choices = cu.GetDialogueChoiceTitle();
+        dialogue.NewTalk(choices, choices + "E");
     }
 
     void OnMadeChoice(string questionID, int choiceNumber)
     {
-        Debug.Log("Aha! In the question " + questionID + " you choosed the option " + choiceNumber);
-        if (STATE == CHOOSE)
+        CombatAction ca = player[choosingUnit].ResolveAction(questionID, choiceNumber, this);
+        if(ca != null)
         {
-            Debug.Log("In choose state and action chosen");
-            if ((questionID == "action" && choiceNumber == 0) || (questionID == "skill" && choiceNumber == 3))
+            turnActions.Add(ca);
+            choosingUnit++;
+            if(choosingUnit >= player.Count)
             {
-                //Do nothing
+                EnemyDecideActions();
+                STATE = BattleState.RUN;
             }
             else
             {
-                Debug.Log("Identifying actions");
-                ResolvePlayerActin(questionID, choiceNumber);
-                ResolveEnemyAction();
-                SortTurnActions();
-                STATE = RUN;
-                ACTION_STATE = START_NEXT;
+                CreateChooseActionDialogue();
             }
-        }
-        else
-        {
-            Debug.Log("Choice made when it shouldn't be possible");
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RegsterCombatAction(CombatAction additionalAction, bool advance = true)
     {
-        if (STATE == RUN && ACTION_STATE == START_NEXT)
+        turnActions.Add(additionalAction);
+        if (advance)
         {
-            if (turnActions.Count > 0)
+            choosingUnit++;
+            if (choosingUnit >= player.Count)
             {
-                Debug.Log("Executing");
-                ACTION_STATE = RUNNING;
-                turnActions[0].Execute(dialogue);
+                EnemyDecideActions();
+                STATE = BattleState.RUN;
             }
             else
             {
-                STATE = CHOOSE;
-                dialogue.NewTalk("ChooseAction", "ChooseActionE");
+                CreateChooseActionDialogue();
             }
         }
-        else if(STATE == RUN && ACTION_STATE == RUNNING)
+    }
+
+    private void EnemyDecideActions()
+    {
+        foreach(CombatUnit op in enemy)
         {
-            if (turnActions[0].IsDone())
+            CombatAction ca = op.AIResolveAction(this);
+            if (ca != null)
+                turnActions.Add(ca);
+        }
+    }
+
+    public void CreateTalk(string title)
+    {
+        dialogue.NewTalk(title, title + "E");
+    }
+
+    #endregion
+
+    #region Execute Action Code
+    // Update is called once per frame
+    void Update()
+    {
+        if (STATE == BattleState.RUN && ACTION_STATE == ActionState.START_NEXT)
+        {
+            if (turnActions.Count > 0)
             {
-                turnActions.RemoveAt(0);
-                ACTION_STATE = START_NEXT;
+                if (turnActions[0].StillValid())
+                {
+                    Debug.Log("Executing Next Action");
+                    ACTION_STATE = ActionState.RUNNING;
+                    turnActions[0].Execute(dialogue);
+                }
+                else
+                {
+                    Debug.Log("Removing Invalid Entry");
+                    turnActions.RemoveAt(0);
+                }
+            }
+            else
+            {
+                //dialogue.NewTalk("ChooseAction", "ChooseActionE");
+                //Choose state
+                BeginChooseState();
             }
         }
+        else if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING)
+        {
+            //Debug.Log("Game Running and Action State running");
+            //Debug.Log("Actions count " + turnActions.Count);
+            //if (turnActions.Count != 0) Debug.Log("Turn Action 0 " + turnActions[0].GetText() + " done? = " + turnActions[0].IsDone());
+            if(turnActions.Count == 0)
+            {
+                CheckKills();
+                ACTION_STATE = ActionState.START_NEXT;
+            }
+            else if (turnActions[0].IsDone())
+            {
+                Debug.Log("Turn Action Done?");
+                turnActions.RemoveAt(0);
+                CheckKills();
+                ACTION_STATE = ActionState.START_NEXT;
+            }
+        }
+    }
+
+    private void CheckKills()
+    {
+        for(int i = 0; i < player.Count; i++)
+        {
+            if(player[i].IsDead())
+            {
+                CombatUnit dead = player[i];
+                player.RemoveAt(i);
+                i--;
+                dead.HandleKill();
+            }
+        }
+        for (int i = 0; i < enemy.Count; i++)
+        {
+            if (enemy[i].IsDead())
+            {
+                CombatUnit dead = enemy[i];
+                enemy.RemoveAt(i);
+                i--;
+                dead.HandleKill();
+            }
+        }
+        CheckDone();
+    }
+
+    private void CheckDone()
+    {
+        if(player.Count == 0)
+        {
+            Debug.Log("Game Over");
+            STATE = BattleState.END;
+        } 
+        else if(enemy.Count == 0)
+        {
+            Debug.Log("Win");
+            STATE = BattleState.END;
+            PlayerWin();
+        }
+    }
+
+    private void PlayerWin()
+    {
+        dialogue.callback.AddListener(EndTextEnd);
+        dialogue.NewTalk("WinHunt", "WinHuntE");
+    }
+
+    public void EndTextEnd()
+    {
+        Debug.Log("Return to overworld.");
     }
 
     private void SortTurnActions()
@@ -179,46 +290,14 @@ public class CombatManager : MonoBehaviour
         turnActions.Add(new ActionAdvance(enemy[0], 99, this));
     }
 
-    private void ResolvePlayerActin(string questionID, int choiceNumber)
+    #endregion
+
+    public enum BattleState
     {
-        Debug.Log("Resolving player action");
-        if (questionID == "action")
-        {
-            switch (choiceNumber)
-            {
-                case 0:
-                    break; //Sub-menue
-                case 1:
-                    //Inventory
-                    break;
-                case 2:
-                    Debug.Log("Advance");
-                    turnActions.Add(new ActionAdvance(player[0], 100, this)); //TODO Speed
-                    break;
-                case 3:
-                    Debug.Log("Withdraw");
-                    turnActions.Add(new ActionWithdraw(player[0], 100, this)); //TODO Speed
-                    break;
-                default:
-                    break; //Here as a failsafe
-            }
-        }
-        else if (questionID == "skill")
-        {
-            switch (choiceNumber)
-            {
-                case 0:
-                    turnActions.Add(new ActionAttack(player[0], 150, this)); //TODO Speed
-                    break; //Attack
-                case 1:
-                    break; //Guard
-                case 2:
-                    break; //Pray
-                case 3:
-                    break; //Sub-menue
-                default:
-                    break;
-            }
-        }
-    }
+        BEGIN, CHOOSE, RUN, END
+}
+    public enum ActionState
+    {
+        START_NEXT, RUNNING
+}
 }

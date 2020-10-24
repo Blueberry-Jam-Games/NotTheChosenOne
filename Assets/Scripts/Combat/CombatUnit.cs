@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatUnit : MonoBehaviour
+public abstract class CombatUnit : MonoBehaviour
 {
     public Facing direction;
     public string unitName;
@@ -30,6 +30,28 @@ public class CombatUnit : MonoBehaviour
         if (hp < 0) hp = 0;
         Debug.Log("Starting hp bar");
         hpBar.DealDamage(hp);
+    }
+
+    public bool IsDead()
+    {
+        return hp == 0;
+    }
+
+    public void HandleKill()
+    {
+        Destroy(hpBar.gameObject);
+        Destroy(this.gameObject);
+    }
+
+    public abstract string GetDialogueChoiceTitle();
+
+    public abstract CombatAction ResolveAction(string question, int selection, CombatManager cmRef);
+
+    public abstract CombatAction AIResolveAction(CombatManager cmRef);
+
+    public int GetDepth()
+    {
+        return sp.sortingOrder;
     }
 
     public void Advance()
@@ -82,6 +104,11 @@ public class CombatUnit : MonoBehaviour
         {
             sp.sortingOrder = newSortOrder;
         }
+    }
+
+    protected void DisplayActionTargeting(CombatManager cmRef)
+    {
+        cmRef.CreateTalk("Target" + cmRef.enemy.Count);
     }
 }
 
