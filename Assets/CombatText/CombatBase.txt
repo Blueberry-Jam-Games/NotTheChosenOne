@@ -67,6 +67,14 @@ A %title approaches!
 %user Retreated!
 [title=ActionRetreatE]
 
+[title=EntityDie]
+%target Was Defeated!
+[title=EntityDieE]
+
+[title=EntityDieMultiple]
+%target Were Defeated!
+[title=EntityDieMultipleE]
+
 [title=WinHunt]
 You Hunted Down %title!
 Aptitude Increased!

@@ -14,6 +14,8 @@ public class CombatManager : MonoBehaviour
 
     List<CombatAction> turnActions;
 
+    public BattleType battleType = BattleType.HUNT;
+
     public BattleState STATE = BattleState.BEGIN;
     public ActionState ACTION_STATE = ActionState.START_NEXT;
 
@@ -117,7 +119,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Waiting for frame");
         yield return null;
         Debug.Log("Recieved frame");
-        dialogue.NewTalk("StartDefault", "StartDefaultE");
+        dialogue.NewTalk(battleType.StartDialogue(), battleType.StartDialogue() + "E");
         Debug.Log("Created StartDefault Dialogue");
     }
 
@@ -160,6 +162,7 @@ public class CombatManager : MonoBehaviour
             if(choosingUnit >= player.Count)
             {
                 EnemyDecideActions();
+                SortTurnActions();
                 STATE = BattleState.RUN;
             }
             else
@@ -243,21 +246,27 @@ public class CombatManager : MonoBehaviour
             }
             else if (turnActions[0].IsDone())
             {
-                Debug.Log("Turn Action Done?");
                 turnActions.RemoveAt(0);
                 CheckKills();
-                ACTION_STATE = ActionState.START_NEXT;
+                if (ACTION_STATE != ActionState.EXTRA_DIALOGUE)
+                {
+                    ACTION_STATE = ActionState.START_NEXT;
+                }
             }
         }
     }
 
     private void CheckKills()
     {
+        List<string> deaths = new List<string>();
+        bool anyKills = false;
         for(int i = 0; i < player.Count; i++)
         {
             if(player[i].IsDead())
             {
+                anyKills = true;
                 CombatUnit dead = player[i];
+                deaths.Add(dead.unitName);
                 player.RemoveAt(i);
                 i--;
                 dead.HandleKill();
@@ -267,12 +276,50 @@ public class CombatManager : MonoBehaviour
         {
             if (enemy[i].IsDead())
             {
+                anyKills = true;
                 CombatUnit dead = enemy[i];
+                deaths.Add(dead.unitName);
                 enemy.RemoveAt(i);
                 i--;
                 dead.HandleKill();
             }
         }
+        //If any entities have died, generate a string saying so and display it.
+        if(anyKills)
+        {
+            StringBuilder killString = new StringBuilder();
+            if(deaths.Count == 1)
+            {
+                ConfigureVariable("%target", deaths[0]);
+                ACTION_STATE = ActionState.EXTRA_DIALOGUE;
+                dialogue.callback.AddListener(DeathTextCallback);
+                dialogue.NewTalk("EntityDie", "EntityDieE");
+            }
+            else
+            {
+                killString.Append(deaths[0]);
+                int i = 1;
+                bool comma = false;
+                while (i < deaths.Count-1)
+                {
+                    killString.Append(", ");
+                    killString.Append(deaths[i]);
+                    comma = true;
+                }
+                if (comma)
+                {
+                    killString.Append(",");
+                }
+                killString.Append(" and ");
+                killString.Append(deaths[deaths.Count - 1]);
+            }
+        }
+    }
+
+    private void DeathTextCallback()
+    {
+        ACTION_STATE = ActionState.START_NEXT;
+        dialogue.callback.RemoveListener(DeathTextCallback);
         CheckDone();
     }
 
@@ -294,7 +341,7 @@ public class CombatManager : MonoBehaviour
     private void PlayerWin()
     {
         dialogue.callback.AddListener(EndTextEnd);
-        dialogue.NewTalk("WinHunt", "WinHuntE");
+        dialogue.NewTalk(battleType.EndDialogue(), battleType.EndDialogue() + "E");
     }
 
     public void EndTextEnd()
@@ -325,20 +372,59 @@ public class CombatManager : MonoBehaviour
             }
         }
     }
-
-    private void ResolveEnemyAction()
-    {
-        turnActions.Add(new ActionAdvance(enemy[0], 99, this));
-    }
-
     #endregion
 
     public enum BattleState
     {
         BEGIN, CHOOSE, RUN, END
-}
+    }
+
     public enum ActionState
     {
-        START_NEXT, RUNNING
+        START_NEXT, EXTRA_DIALOGUE, RUNNING
+    }
 }
+
+//This is going to be borrowed from Minecraft's CreativeTabs and Blocks system
+public class BattleType
+{
+    //These are the options of battle types kind of like an enumeration
+    public static readonly BattleType HUNT = new BattleType("StartDefault", "WinHunt");
+
+    //The rest is the class implementation ----------------------
+    //These are titles for RPGTalk
+    private string startDialogue;
+    private string endDialogue;
+    //TODO anything else that can be decided here
+
+    //The constructor needs to either get all information upfront, or follow up functions should return this allowing easy chaining of configuration into one line.
+    public BattleType(string sd, string ed)
+    {
+        startDialogue = sd;
+        endDialogue = ed;
+    }
+
+    public string StartDialogue()
+    {
+        return startDialogue;
+    }
+
+    public string EndDialogue()
+    {
+        return endDialogue;
+    }
+
+    //Setter functions should set the variable and return this object. This means they can be chained together.
+    // ie. new BattleType("", "").SetStartDialogue("").SetEndDialogue("");
+    public BattleType SetStartDialogue(string dialoge)
+    {
+        startDialogue = dialoge;
+        return this;
+    }
+
+    public BattleType SetEndDialogue(string dialoge)
+    {
+        endDialogue = dialoge;
+        return this;
+    }
 }
