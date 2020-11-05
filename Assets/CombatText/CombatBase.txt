@@ -1,5 +1,5 @@
 [title=StartDefault]
-A %e approaches!
+A %title approaches!
 [title=StartDefaultE]
 
 [title=ChooseAction]
@@ -19,7 +19,7 @@ A %e approaches!
 [title=ChooseSkillE]
 
 [title=ChooseFriend]
-[question=friendAction]What will %f do?
+[question=friendAction]What will %ally do?
 [choice]Attack
 [choice]Guard
 [choice]Advance
@@ -28,23 +28,23 @@ A %e approaches!
 
 [title=Target2]
 [question=target]What is your target?
+[choice]%e0
 [choice]%e1
-[choice]%e2
 [title=Target2E]
 
 [title=Target3]
 [question=target]What is your target?
+[choice]%e0
 [choice]%e1
 [choice]%e2
-[choice]%e3
 [title=Target3E]
 
 [title=Target4]
 [question=target]What is your target?
+[choice]%e0
 [choice]%e1
 [choice]%e2
 [choice]%e3
-[choice]%e4
 [title=TargetE]
 
 [title=UseSkill]
@@ -60,6 +60,6 @@ Attack Missed!
 [title=ActionAttackFailE]
 
 [title=WinHunt]
-You Hunted Down a %e!
+You Hunted Down %title!
 Aptitude Increased!
 [title=WinHuntE]

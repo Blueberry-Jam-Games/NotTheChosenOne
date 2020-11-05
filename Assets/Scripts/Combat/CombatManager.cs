@@ -1,6 +1,9 @@
 ﻿using RPGTALK.Helper;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -34,22 +37,8 @@ public class CombatManager : MonoBehaviour
 
         turnActions = new List<CombatAction>();
 
-        string title = "";
+        SetRPGTalkVariables();
 
-        foreach (CombatUnit cu in enemy)
-        {
-            CreateHealthBar(cu, opponentHealthBase);
-            //Builds the intro message
-            if (title != "")
-                title += ", ";
-            title += cu.unitName;
-        }
-
-        Debug.Log("Title configured " + title);
-        RPGTalkVariable rtv = new RPGTalkVariable();
-        rtv.variableName = "%e";
-        rtv.variableValue = title;
-        dialogue.variables[0] = rtv;
         dialogue.callback.AddListener(IntroTextEnd);
 
         foreach (CombatUnit cu in player)
@@ -59,6 +48,58 @@ public class CombatManager : MonoBehaviour
 
         Debug.Log("Start coroutine");
         StartCoroutine(IntroTextLater());
+    }
+
+    private void SetRPGTalkVariables()
+    {
+        //Title is first
+        //string title = "";
+        StringBuilder titleBuilder = new StringBuilder();
+
+        titleBuilder.Append(enemy[0].unitName); // Handle enemy[0] independently to prime next step
+
+        ConfigureVariable("%e0", enemy[0].unitName);
+        CreateHealthBar(enemy[0], opponentHealthBase);
+        for (int i = 1; i < enemy.Count; i++) // Now for the remainder
+        {
+            if(enemy.Count > 2)
+            {
+                titleBuilder.Append(", ");
+            }
+
+            if(i == enemy.Count - 1) // If this is the last one, add "and"
+            {
+                if (titleBuilder.ToString().Last() != ' ')
+                    titleBuilder.Append(" ");
+                titleBuilder.Append("and ");
+            }
+
+            titleBuilder.Append(enemy[i].unitName);
+            ConfigureVariable("%e" + i, enemy[i].unitName);
+            CreateHealthBar(enemy[i], opponentHealthBase);
+        }
+
+        Debug.Log("Title configured " + titleBuilder.ToString());
+
+        ConfigureVariable("%title", titleBuilder.ToString());
+
+        ConfigureVariable("%player", player[0].unitName);
+        ConfigureVariable("%ally", player[1].unitName);
+    }
+
+    private void ConfigureVariable(string key, string value)
+    {
+        //Find exising var
+        RPGTalkVariable rtv = new RPGTalkVariable();
+        foreach(RPGTalkVariable chk in dialogue.variables) // Check list
+        {
+            if (chk.variableName == key) // If we find the key we need, store it and quit
+            {
+                rtv = chk;
+                break;
+            }
+        }
+        rtv.variableValue = value;
     }
 
     private void CreateHealthBar(CombatUnit target, GameObject parent)
