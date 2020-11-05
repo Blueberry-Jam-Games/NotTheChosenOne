@@ -45,19 +45,27 @@ A %title approaches!
 [choice]%e1
 [choice]%e2
 [choice]%e3
-[title=TargetE]
+[title=Target4E]
 
 [title=UseSkill]
 %s
 [title=UseSkillE]
 
 [title=ActionAttackSuccess]
-Attack!
+%user Attacked!
 [title=ActionAttackSuccessE]
 
 [title=ActionAttackFail]
-Attack Missed!
+%user's Attack Missed!
 [title=ActionAttackFailE]
+
+[title=ActionAdvance]
+%user Advanced!
+[title=ActionAdvanceE]
+
+[title=ActionRetreat]
+%user Retreated!
+[title=ActionRetreatE]
 
 [title=WinHunt]
 You Hunted Down %title!

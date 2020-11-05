@@ -1658,6 +1658,15 @@ public class RPGTalk : MonoBehaviour {
                             //make sure we will not want to make it to a new talk
                             correctText = LookForNewTalk(correctText);
 
+                            // Apply variables to button text
+                            for (int v = 0; v < variables.Length; v++)
+                            {
+                                if (correctText.Contains(variables[v].variableName))
+                                {
+                                    correctText = correctText.Replace(variables[v].variableName, variables[v].variableValue);
+                                }
+                            }
+
                             newChoice.GetComponentInChildren<Text> ().text = correctText;
                             int choiceNumber = i;
                             newChoiceBtn.onClick.AddListener (delegate{MadeAChoice (q.questionID, choiceNumber, thisText);});

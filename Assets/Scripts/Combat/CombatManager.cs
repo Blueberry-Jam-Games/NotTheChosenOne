@@ -87,7 +87,7 @@ public class CombatManager : MonoBehaviour
         ConfigureVariable("%ally", player[1].unitName);
     }
 
-    private void ConfigureVariable(string key, string value)
+    public void ConfigureVariable(string key, string value)
     {
         //Find exising var
         RPGTalkVariable rtv = new RPGTalkVariable();
