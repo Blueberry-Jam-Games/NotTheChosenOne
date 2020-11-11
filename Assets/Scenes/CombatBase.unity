@@ -1709,9 +1709,25 @@ MonoBehaviour:
   textSpeed: 50
   currentChar: 0
   variables:
-  - variableName: '%e'
+  - variableName: '%title'
     variableValue: todo
   - variableName: '%s'
+    variableValue: todo
+  - variableName: '%e0'
+    variableValue: todo
+  - variableName: '%e1'
+    variableValue: todo
+  - variableName: '%e2'
+    variableValue: todo
+  - variableName: '%e3'
+    variableValue: todo
+  - variableName: '%player'
+    variableValue: todo
+  - variableName: '%ally'
+    variableValue: todo
+  - variableName: '%user'
+    variableValue: todo
+  - variableName: '%target'
     variableValue: todo
   shouldUsePhotos: 0
   characters: []
