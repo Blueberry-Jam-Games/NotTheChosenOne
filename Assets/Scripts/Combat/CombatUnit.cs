@@ -10,11 +10,13 @@ public abstract class CombatUnit : MonoBehaviour
     public int hp, maxHP;
     protected SpriteRenderer sp;
     protected HealthBar hpBar;
+    protected Animator unitAnim;
 
     public void Start()
     {
         sp = GetComponent<SpriteRenderer>();
         hp = maxHP;
+        unitAnim = GetComponent<Animator>();
     }
 
     public void ProvideHPBar(HealthBar bar)

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UnitPlayer : CombatUnit
 {
+    public GameObject arrowRef;
+
     public override string GetDialogueChoiceTitle()
     {
         return "ChooseAction";
@@ -74,5 +76,10 @@ public class UnitPlayer : CombatUnit
     {
         Debug.LogError("Player AI function called unexpectedly");
         return null;
+    }
+
+    void spawnArrow()
+    {
+
     }
 }

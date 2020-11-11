@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 77264325}
   - component: {fileID: 77264327}
   - component: {fileID: 77264326}
+  - component: {fileID: 77264328}
   m_Layer: 0
   m_Name: Ally
   m_TagString: Untagged
@@ -310,6 +311,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &77264328
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77264324}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &106383274
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +457,7 @@ GameObject:
   - component: {fileID: 245258600}
   - component: {fileID: 245258602}
   - component: {fileID: 245258601}
+  - component: {fileID: 245258603}
   m_Layer: 0
   m_Name: Deer (1)
   m_TagString: Untagged
@@ -527,6 +548,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &245258603
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245258599}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &430401291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1787,6 +1827,7 @@ GameObject:
   - component: {fileID: 1467056085}
   - component: {fileID: 1467056084}
   - component: {fileID: 1467056086}
+  - component: {fileID: 1467056087}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Untagged
@@ -1877,6 +1918,25 @@ MonoBehaviour:
   acc: 100
   hp: 30
   maxHP: 30
+--- !u!95 &1467056087
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467056083}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1492250513
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,6 +2225,7 @@ GameObject:
   - component: {fileID: 1958146087}
   - component: {fileID: 1958146086}
   - component: {fileID: 1958146088}
+  - component: {fileID: 1958146089}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2255,6 +2316,26 @@ MonoBehaviour:
   acc: 100
   hp: 20
   maxHP: 20
+  arrowRef: {fileID: 0}
+--- !u!95 &1958146089
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958146085}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 592307aae3424ff469e36da8c76d50b1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2089127436
 GameObject:
   m_ObjectHideFlags: 0
