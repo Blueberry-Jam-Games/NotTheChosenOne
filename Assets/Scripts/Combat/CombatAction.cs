@@ -51,6 +51,7 @@ public abstract class CombatAction
     {
         dialogue.callback.AddListener(TextEnd);
         Debug.Log("Displaying text at title " + title + " and registering listener");
+        manager.ConfigureVariable("%user", user.unitName);
         dialogue.NewTalk(title, title + "E");
         talkStore = dialogue;
     }
@@ -83,7 +84,7 @@ public class ActionAdvance : CombatAction
     {
         Debug.Log("Executing Advance for " + user.unitName);
         user.Advance();
-        DisplayText(dialogue);
+        DisplayTextAtTitle(dialogue, "ActionAdvance");
     }
 
     public override string GetText()
@@ -104,7 +105,7 @@ public class ActionWithdraw : CombatAction
     {
         Debug.Log("Withdraw executed");
         user.Retreat();
-        DisplayText(dialogue);
+        DisplayTextAtTitle(dialogue, "ActionRetreat");
     }
 
     public override string GetText()
