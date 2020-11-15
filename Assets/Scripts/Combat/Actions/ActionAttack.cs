@@ -33,4 +33,9 @@ public class ActionAttack : CombatAction
     {
         return user.unitName + " Attacked!";
     }
+
+    public override void ActiveFrame()
+    {
+
+    }
 }

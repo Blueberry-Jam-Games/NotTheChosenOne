@@ -18,4 +18,9 @@ public class ActionGuard : CombatAction
     {
         return user.unitName + " Defended!";
     }
+
+    public override void ActiveFrame()
+    {
+
+    }
 }

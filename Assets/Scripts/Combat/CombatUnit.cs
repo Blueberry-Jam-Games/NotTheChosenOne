@@ -17,6 +17,8 @@ public abstract class CombatUnit : MonoBehaviour
         sp = GetComponent<SpriteRenderer>();
         hp = maxHP;
         unitAnim = GetComponent<Animator>();
+        float tgt = GetTargetScale();
+        transform.localScale = new Vector3(tgt, tgt, tgt);
     }
 
     public void ProvideHPBar(HealthBar bar)
@@ -80,11 +82,16 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
+    public float GetTargetScale()
+    {
+        return 0.7f + GetDepth() * 0.1f;
+    }
+
     protected void MoveIn()
     {
         int newSortOrder = sp.sortingOrder;
         newSortOrder--;
-        if(newSortOrder < 0)
+        if (newSortOrder < 0)
         {
             //Flee
         }
@@ -111,6 +118,12 @@ public abstract class CombatUnit : MonoBehaviour
     protected void DisplayActionTargeting(CombatManager cmRef)
     {
         cmRef.CreateTalk("Target" + cmRef.enemy.Count);
+    }
+
+    public void ApplyMovementAnimation(int level, float animCount)
+    {
+        float tgt = 0.7f + (level) * 0.1f + animCount*0.1f;
+        transform.localScale = new Vector3(tgt, tgt, tgt);
     }
 }
 

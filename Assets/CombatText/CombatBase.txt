@@ -63,9 +63,17 @@ A %title approaches!
 %user Advanced!
 [title=ActionAdvanceE]
 
+[title=ActionAdvanceFail]
+It's not safe for %user to go any further!
+[title=ActionAdvanceFailE]
+
 [title=ActionRetreat]
 %user Retreated!
 [title=ActionRetreatE]
+
+[title=ActionEndByRetreat]
+%user and the party ran away!
+[title=ActionEndByRetreatE]
 
 [title=EntityDie]
 %target Was Defeated!

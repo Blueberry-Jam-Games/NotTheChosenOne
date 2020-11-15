@@ -227,7 +227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &77264325
 Transform:
   m_ObjectHideFlags: 0
@@ -464,7 +464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &245258600
 Transform:
   m_ObjectHideFlags: 0
@@ -474,7 +474,7 @@ Transform:
   m_GameObject: {fileID: 245258599}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.05, y: -1.6639209, z: 15}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children: []
   m_Father: {fileID: 178489909}
   m_RootOrder: 2
@@ -1452,10 +1452,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player:
   - {fileID: 1958146088}
-  - {fileID: 77264326}
   enemy:
   - {fileID: 1467056086}
-  - {fileID: 245258601}
+  LevelMin: 0
+  LevelMax: 3
   STATE: 0
   ACTION_STATE: 0
   playerHealthBase: {fileID: 613812456}

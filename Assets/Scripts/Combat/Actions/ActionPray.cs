@@ -18,4 +18,9 @@ public class ActionPray : CombatAction
     {
         return user.unitName + " Prayed!";
     }
+
+    public override void ActiveFrame()
+    {
+
+    }
 }

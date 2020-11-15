@@ -15,6 +15,8 @@ public class CombatManager : MonoBehaviour
     List<CombatAction> turnActions;
 
     public BattleType battleType = BattleType.HUNT;
+    public int LevelMin = 0;
+    public int LevelMax = 3;
 
     public BattleState STATE = BattleState.BEGIN;
     public ActionState ACTION_STATE = ActionState.START_NEXT;
@@ -86,7 +88,8 @@ public class CombatManager : MonoBehaviour
         ConfigureVariable("%title", titleBuilder.ToString());
 
         ConfigureVariable("%player", player[0].unitName);
-        ConfigureVariable("%ally", player[1].unitName);
+        if(player.Count >= 2)
+            ConfigureVariable("%ally", player[1].unitName);
     }
 
     public void ConfigureVariable(string key, string value)
@@ -252,6 +255,10 @@ public class CombatManager : MonoBehaviour
                 {
                     ACTION_STATE = ActionState.START_NEXT;
                 }
+            }
+            else
+            {
+                turnActions[0].ActiveFrame();
             }
         }
     }
