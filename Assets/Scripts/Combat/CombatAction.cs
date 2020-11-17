@@ -16,7 +16,6 @@ public abstract class CombatAction
     protected int speed;
     protected CombatUnit user;
     protected bool actionDone;
-    protected RPGTalk talkStore;
     protected CombatManager manager;
     
     public int GetSpeed()
@@ -34,38 +33,35 @@ public abstract class CombatAction
         return actionDone;
     }
 
-    protected void DisplayText(RPGTalk dialogue)
+    protected void DisplayText()
     {
         RPGTalkVariable rtv = new RPGTalkVariable
         {
             variableName = "%s",
             variableValue = GetText()
         };
-        dialogue.variables[1] = rtv;
-        dialogue.callback.AddListener(TextEnd);
-        dialogue.NewTalk("UseSkill", "UseSkillE");
-        talkStore = dialogue;
+        manager.GetDialogue().variables[1] = rtv;
+        manager.GetDialogue().callback.AddListener(TextEnd);
+        manager.GetDialogue().NewTalk("UseSkill", "UseSkillE");
     }
 
-    protected void DisplayTextAtTitle(RPGTalk dialogue, string title)
+    protected void DisplayTextAtTitle(string title)
     {
-        dialogue.callback.AddListener(TextEnd);
+        manager.GetDialogue().callback.AddListener(TextEnd);
         Debug.Log("Displaying text at title " + title + " and registering listener");
         manager.ConfigureVariable("%user", user.unitName);
-        dialogue.NewTalk(title, title + "E");
-        talkStore = dialogue;
+        manager.GetDialogue().NewTalk(title, title + "E");
     }
 
     public virtual void TextEnd()
     {
         Debug.Log("TextEnd Triggered");
         actionDone = true;
-        talkStore.callback.RemoveListener(TextEnd);
-        talkStore = null;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
 
     public abstract string GetText();
-    public abstract void Execute(RPGTalk dialogue);
+    public abstract void Execute();
 
     public abstract void ActiveFrame();
 
@@ -88,7 +84,7 @@ public class ActionAdvance : CombatAction
         
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
         forewards = user.direction == Facing.FOREWARDS;
         //Debug.Log("Executing Advance for " + user.unitName);
@@ -96,19 +92,19 @@ public class ActionAdvance : CombatAction
         //DisplayTextAtTitle(dialogue, "ActionAdvance");
         //user.Retreat();
 
-        //int newdepth = user.GetDepth() + (forewards ? -1 : 1);
-        //Debug.Log("Checking advance with current depth " + user.GetDepth() + " and next depth " + newdepth);
-        //if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
-        //{
+        int newdepth = user.GetDepth() + (forewards ? -1 : 1);
+        Debug.Log("Checking advance with current depth " + user.GetDepth() + " and next depth " + newdepth);
+        if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
+        {
             animationFrame = 0.0f;
             Debug.Log("Advance executing current layer " + user.GetDepth() + " target layer " + (user.direction == Facing.FOREWARDS ? user.GetDepth() - 1 : user.GetDepth() + 1));
-            DisplayTextAtTitle(dialogue, "ActionAdvance");
-        /*}
+            DisplayTextAtTitle("ActionAdvance");
+        }
         else
         {
             animationFrame = ANIM_LEN + 1;
-            DisplayTextAtTitle(dialogue, "ActionAdvanceFail");
-        }*/
+            DisplayTextAtTitle("ActionAdvanceFail");
+        }
     }
 
     public override string GetText()
@@ -121,8 +117,7 @@ public class ActionAdvance : CombatAction
     {
         Debug.Log("advance recieved text end Triggered");
         dialogueDone = true;
-        talkStore.callback.RemoveListener(TextEnd);
-        talkStore = null;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
 
     public override void ActiveFrame()
@@ -164,23 +159,24 @@ public class ActionWithdraw : CombatAction
 
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
-        //int newdepth = user.GetDepth() + (forewards ? 1 : -1);
-        //Debug.Log("Checking withdraw with current depth " + user.GetDepth() + " and next depth " + newdepth + " Min is " + manager.LevelMin + " max is " + manager.LevelMax);
-        //if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
-        //{
+        forewards = user.direction == Facing.FOREWARDS;
+        int newdepth = user.GetDepth() + (forewards ? 1 : -1);
+        Debug.Log("Checking withdraw with current depth " + user.GetDepth() + " and next depth " + newdepth + " Min is " + manager.LevelMin + " max is " + manager.LevelMax);
+        if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
+        {
             animationFrame = 0.0f;
             Debug.Log("Withdraw executed");
-            DisplayTextAtTitle(dialogue, "ActionRetreat");
+            DisplayTextAtTitle("ActionRetreat");
             forewards = user.direction == Facing.FOREWARDS;
-        /*}
+        }
         else
         {
             animationFrame = ANIM_LEN + 1;
-            DisplayTextAtTitle(dialogue, "ActionEndByRetreat");
+            DisplayTextAtTitle("ActionEndByRetreat");
             Debug.Log("Flee Condition"); // CombatUnit will handle this
-        }*/
+        }
     }
 
     public override string GetText()
@@ -192,8 +188,7 @@ public class ActionWithdraw : CombatAction
     {
         Debug.Log("Withdraw recieved text end Triggered");
         dialogueDone = true;
-        talkStore.callback.RemoveListener(TextEnd);
-        talkStore = null;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
 
     public override void ActiveFrame()
@@ -228,7 +223,7 @@ public class ActionNothing : CombatAction
 
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
         actionDone = true;
     }

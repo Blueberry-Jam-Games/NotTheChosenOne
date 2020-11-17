@@ -9,9 +9,9 @@ public class ActionGuard : CombatAction
 
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
-        DisplayText(dialogue);
+        DisplayText();
     }
 
     public override string GetText()

@@ -72,7 +72,7 @@ It's not safe for %user to go any further!
 [title=ActionRetreatE]
 
 [title=ActionEndByRetreat]
-%user and the party ran away!
+%user tried to run away, but couldn't!
 [title=ActionEndByRetreatE]
 
 [title=EntityDie]

@@ -15,15 +15,15 @@ public class ActionAttack : CombatAction
         this.enemies = mngr.enemy.Count;
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
         if (manager.enemy.Count != enemies)
         {
-            DisplayTextAtTitle(dialogue, "ActionAttackFail");
+            DisplayTextAtTitle("ActionAttackFail");
         }
         else
         {
-            DisplayTextAtTitle(dialogue, "ActionAttackSuccess");
+            DisplayTextAtTitle("ActionAttackSuccess");
             CombatUnit cu = manager.enemy[target]; //TODO apply targeting
             cu.InflictDamage(user, 10);
         }

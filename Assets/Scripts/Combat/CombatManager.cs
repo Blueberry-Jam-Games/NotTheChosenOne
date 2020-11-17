@@ -54,6 +54,11 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(IntroTextLater());
     }
 
+    public RPGTalk GetDialogue()
+    {
+        return dialogue;
+    }
+
     private void SetRPGTalkVariables()
     {
         //Title is first
@@ -222,7 +227,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Debug.Log("Executing Next Action");
                     ACTION_STATE = ActionState.RUNNING;
-                    turnActions[0].Execute(dialogue);
+                    turnActions[0].Execute();
                 }
                 else
                 {
@@ -256,10 +261,15 @@ public class CombatManager : MonoBehaviour
                     ACTION_STATE = ActionState.START_NEXT;
                 }
             }
-            else
-            {
-                turnActions[0].ActiveFrame();
-            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //In battle, if we are in the animation state, allow that to run in real time so it is not bound to frame time.
+        if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING && turnActions.Count != 0 && !turnActions[0].IsDone())
+        {
+            turnActions[0].ActiveFrame();
         }
     }
 
