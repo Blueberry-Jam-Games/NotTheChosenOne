@@ -74,27 +74,23 @@ public abstract class CombatAction
 public class ActionAdvance : CombatAction
 {
     float animationFrame;
-    bool halfway = false;
     static readonly float ANIM_LEN = 30.0f;
     bool dialogueDone = false;
     bool forewards;
+    int animationLayer;
+    bool succeding;
 
     public ActionAdvance(CombatUnit user, int speed, CombatManager mngr) : base(user, speed, mngr)
     {
-        
+        forewards = user.direction == Facing.FOREWARDS;
+        int destinationLayer = user.GetDepth() + (forewards ? -1 : 1);
+        succeding = destinationLayer <= manager.LevelMax && destinationLayer >= manager.LevelMin;
+        animationLayer = forewards ? user.GetDepth() - 1 : user.GetDepth();
     }
 
     public override void Execute()
     {
-        forewards = user.direction == Facing.FOREWARDS;
-        //Debug.Log("Executing Advance for " + user.unitName);
-        //user.Advance();
-        //DisplayTextAtTitle(dialogue, "ActionAdvance");
-        //user.Retreat();
-
-        int newdepth = user.GetDepth() + (forewards ? -1 : 1);
-        Debug.Log("Checking advance with current depth " + user.GetDepth() + " and next depth " + newdepth);
-        if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
+        if (succeding)
         {
             animationFrame = 0.0f;
             Debug.Log("Advance executing current layer " + user.GetDepth() + " target layer " + (user.direction == Facing.FOREWARDS ? user.GetDepth() - 1 : user.GetDepth() + 1));
@@ -128,13 +124,9 @@ public class ActionAdvance : CombatAction
             if (Mathf.Abs(animationFrame - ANIM_LEN / 2) < Mathf.Epsilon)
             {
                 user.Advance();
-                halfway = true;
             }
-
-            int layer = forewards ? (halfway ? user.GetDepth() : user.GetDepth() - 1) : (halfway ? user.GetDepth() - 1 : user.GetDepth());
             float distance = forewards ? 1-animationFrame / ANIM_LEN : animationFrame / ANIM_LEN;
-            //Debug.Log("Setting animation properties at frame " + animationFrame + " progress " + animationFrame / ANIM_LEN + " and target layer " + layer + " resulting in distance " + distance);
-            user.ApplyMovementAnimation(layer, distance);
+            user.ApplyMovementAnimation(animationLayer, distance);
         }
         else
         {
@@ -149,25 +141,25 @@ public class ActionAdvance : CombatAction
 public class ActionWithdraw : CombatAction
 {
     float animationFrame;
-    bool halfway = false;
     static readonly float ANIM_LEN = 30.0f;
     bool dialogueDone = false;
     bool forewards;
+    int animationLayer;
+    bool succeding;
 
     public ActionWithdraw(CombatUnit user, int speed, CombatManager mngr) : base(user, speed, mngr)
     {
-
+        forewards = user.direction == Facing.FOREWARDS;
+        int destinationLayer = user.GetDepth() + (forewards ? 1 : -1);
+        succeding = destinationLayer <= manager.LevelMax && destinationLayer >= manager.LevelMin;
+        animationLayer = forewards ? user.GetDepth() : user.GetDepth() - 1;
     }
 
     public override void Execute()
     {
-        forewards = user.direction == Facing.FOREWARDS;
-        int newdepth = user.GetDepth() + (forewards ? 1 : -1);
-        Debug.Log("Checking withdraw with current depth " + user.GetDepth() + " and next depth " + newdepth + " Min is " + manager.LevelMin + " max is " + manager.LevelMax);
-        if (newdepth <= manager.LevelMax && newdepth >= manager.LevelMin)
+        if (succeding)
         {
             animationFrame = 0.0f;
-            Debug.Log("Withdraw executed");
             DisplayTextAtTitle("ActionRetreat");
             forewards = user.direction == Facing.FOREWARDS;
         }
@@ -175,7 +167,6 @@ public class ActionWithdraw : CombatAction
         {
             animationFrame = ANIM_LEN + 1;
             DisplayTextAtTitle("ActionEndByRetreat");
-            Debug.Log("Flee Condition"); // CombatUnit will handle this
         }
     }
 
@@ -186,7 +177,6 @@ public class ActionWithdraw : CombatAction
 
     public override void TextEnd()
     {
-        Debug.Log("Withdraw recieved text end Triggered");
         dialogueDone = true;
         manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
@@ -199,12 +189,9 @@ public class ActionWithdraw : CombatAction
             if (Mathf.Abs(animationFrame - ANIM_LEN / 2) < Mathf.Epsilon)
             {
                 user.Retreat();
-                halfway = true;
             }
-
-            int layer = !halfway ? user.GetDepth() : forewards ? user.GetDepth() - 1 : user.GetDepth() + 1;
             float distance = forewards ? animationFrame / ANIM_LEN : 1 - animationFrame / ANIM_LEN;
-            user.ApplyMovementAnimation(layer, distance);
+            user.ApplyMovementAnimation(animationLayer, distance);
         }
         else
         {

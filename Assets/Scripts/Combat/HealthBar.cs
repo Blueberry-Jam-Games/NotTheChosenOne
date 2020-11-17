@@ -8,9 +8,12 @@ public class HealthBar : MonoBehaviour
 
     protected Slider display;
 
+    public GameObject healthDisplay;
+
     private string entName;
     private int maxHp;
     private int hp;
+    private int hpTarget;
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +44,6 @@ public class HealthBar : MonoBehaviour
         display.value = hp;
     }
 
-    private int hpTarget;
-
     public void DealDamage(int newHP)
     {
         hpTarget = newHP;
@@ -59,6 +60,11 @@ public class HealthBar : MonoBehaviour
             hp--;
             display.value = hp;
             yield return null;
+        }
+
+        if(hp == 0)
+        {
+            healthDisplay.SetActive(false);
         }
     }
 }
