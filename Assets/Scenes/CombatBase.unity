@@ -227,7 +227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &77264325
 Transform:
   m_ObjectHideFlags: 0
@@ -1419,7 +1419,7 @@ GameObject:
   - component: {fileID: 1125769674}
   m_Layer: 0
   m_Name: CombatManager
-  m_TagString: Untagged
+  m_TagString: CombatManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1452,6 +1452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player:
   - {fileID: 1958146088}
+  - {fileID: 77264326}
   enemy:
   - {fileID: 1467056086}
   LevelMin: 0

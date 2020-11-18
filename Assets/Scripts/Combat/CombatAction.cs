@@ -1,10 +1,14 @@
-﻿using RPGTALK.Helper;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class CombatAction
 {
+    protected int speed;
+    protected CombatUnit user;
+    protected bool actionDone;
+    protected CombatManager manager;
+
     public CombatAction(CombatUnit user, int speed, CombatManager mngr)
     {
         this.user = user;
@@ -12,11 +16,6 @@ public abstract class CombatAction
         actionDone = false;
         manager = mngr;
     }
-
-    protected int speed;
-    protected CombatUnit user;
-    protected bool actionDone;
-    protected CombatManager manager;
     
     public int GetSpeed()
     {
@@ -33,34 +32,19 @@ public abstract class CombatAction
         return actionDone;
     }
 
-    protected void DisplayText()
-    {
-        RPGTalkVariable rtv = new RPGTalkVariable
-        {
-            variableName = "%s",
-            variableValue = GetText()
-        };
-        manager.GetDialogue().variables[1] = rtv;
-        manager.GetDialogue().callback.AddListener(TextEnd);
-        manager.GetDialogue().NewTalk("UseSkill", "UseSkillE");
-    }
-
     protected void DisplayTextAtTitle(string title)
     {
         manager.GetDialogue().callback.AddListener(TextEnd);
-        Debug.Log("Displaying text at title " + title + " and registering listener");
         manager.ConfigureVariable("%user", user.unitName);
         manager.GetDialogue().NewTalk(title, title + "E");
     }
 
     public virtual void TextEnd()
     {
-        Debug.Log("TextEnd Triggered");
         actionDone = true;
         manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
 
-    public abstract string GetText();
     public abstract void Execute();
 
     public abstract void ActiveFrame();
@@ -101,12 +85,6 @@ public class ActionAdvance : CombatAction
             animationFrame = ANIM_LEN + 1;
             DisplayTextAtTitle("ActionAdvanceFail");
         }
-    }
-
-    public override string GetText()
-    {
-        Debug.Log("Advance executed");
-        return user.unitName + " Advanced!";
     }
 
     public override void TextEnd()
@@ -170,11 +148,6 @@ public class ActionWithdraw : CombatAction
         }
     }
 
-    public override string GetText()
-    {
-        return user.unitName + " Retreated!";
-    }
-
     public override void TextEnd()
     {
         dialogueDone = true;
@@ -213,11 +186,6 @@ public class ActionNothing : CombatAction
     public override void Execute()
     {
         actionDone = true;
-    }
-
-    public override string GetText()
-    {
-        return "";
     }
 
     public override void ActiveFrame()

@@ -11,12 +11,7 @@ public class ActionPray : CombatAction
 
     public override void Execute()
     {
-        DisplayText();
-    }
-
-    public override string GetText()
-    {
-        return user.unitName + " Prayed!";
+        DisplayTextAtTitle("ActionPray");
     }
 
     public override void ActiveFrame()

@@ -8,6 +8,9 @@ TagManager:
   - PersistanceController
   - LevelLoader
   - Door
+  - BattleCanvas
+  - TextboxManager
+  - CombatManager
   layers:
   - Default
   - TransparentFX

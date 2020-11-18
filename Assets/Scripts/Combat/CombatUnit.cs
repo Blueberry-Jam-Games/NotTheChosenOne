@@ -8,6 +8,7 @@ public abstract class CombatUnit : MonoBehaviour
     public string unitName;
     public int atk, def, acc;
     public int hp, maxHP;
+    protected CombatManager manager;
     protected SpriteRenderer sp;
     protected HealthBar hpBar;
     protected Animator unitAnim;
@@ -17,6 +18,7 @@ public abstract class CombatUnit : MonoBehaviour
         sp = GetComponent<SpriteRenderer>();
         hp = maxHP;
         unitAnim = GetComponent<Animator>();
+        manager = GameObject.FindWithTag("CombatManager").GetComponent<CombatManager>();
         float tgt = GetTargetScale();
         transform.localScale = new Vector3(tgt, tgt, tgt);
     }
@@ -49,9 +51,9 @@ public abstract class CombatUnit : MonoBehaviour
 
     public abstract string GetDialogueChoiceTitle();
 
-    public abstract CombatAction ResolveAction(string question, int selection, CombatManager cmRef);
+    public abstract CombatAction ResolveAction(string question, int selection);
 
-    public abstract CombatAction AIResolveAction(CombatManager cmRef);
+    public abstract CombatAction AIResolveAction();
 
     public int GetDepth()
     {
@@ -115,9 +117,9 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
-    protected void DisplayActionTargeting(CombatManager cmRef)
+    protected void DisplayActionTargeting()
     {
-        cmRef.CreateTalk("Target" + cmRef.enemy.Count);
+        manager.CreateTalk("Target" + manager.enemy.Count);
     }
 
     public void ApplyMovementAnimation(int level, float animCount)

@@ -11,12 +11,7 @@ public class ActionGuard : CombatAction
 
     public override void Execute()
     {
-        DisplayText();
-    }
-
-    public override string GetText()
-    {
-        return user.unitName + " Defended!";
+        DisplayTextAtTitle("ActionGuard");
     }
 
     public override void ActiveFrame()

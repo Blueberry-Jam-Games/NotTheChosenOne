@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
@@ -62,7 +61,6 @@ public class CombatManager : MonoBehaviour
     private void SetRPGTalkVariables()
     {
         //Title is first
-        //string title = "";
         StringBuilder titleBuilder = new StringBuilder();
 
         titleBuilder.Append(enemy[0].unitName); // Handle enemy[0] independently to prime next step
@@ -140,7 +138,6 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("Dialogue closed");
         dialogue.callback.RemoveListener(IntroTextEnd);
-        //dialogue.NewTalk("ChooseAction", "ChooseActionE"); //What goes here?
         BeginChooseState();
     }
     #endregion
@@ -162,7 +159,7 @@ public class CombatManager : MonoBehaviour
 
     void OnMadeChoice(string questionID, int choiceNumber)
     {
-        CombatAction ca = player[choosingUnit].ResolveAction(questionID, choiceNumber, this);
+        CombatAction ca = player[choosingUnit].ResolveAction(questionID, choiceNumber);
         if(ca != null)
         {
             turnActions.Add(ca);
@@ -202,7 +199,7 @@ public class CombatManager : MonoBehaviour
     {
         foreach(CombatUnit op in enemy)
         {
-            CombatAction ca = op.AIResolveAction(this);
+            CombatAction ca = op.AIResolveAction();
             if (ca != null)
                 turnActions.Add(ca);
         }
@@ -237,16 +234,12 @@ public class CombatManager : MonoBehaviour
             }
             else
             {
-                //dialogue.NewTalk("ChooseAction", "ChooseActionE");
                 //Choose state
                 BeginChooseState();
             }
         }
         else if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING)
         {
-            //Debug.Log("Game Running and Action State running");
-            //Debug.Log("Actions count " + turnActions.Count);
-            //if (turnActions.Count != 0) Debug.Log("Turn Action 0 " + turnActions[0].GetText() + " done? = " + turnActions[0].IsDone());
             if(turnActions.Count == 0)
             {
                 CheckKills();

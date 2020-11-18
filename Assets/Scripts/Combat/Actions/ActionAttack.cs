@@ -29,11 +29,6 @@ public class ActionAttack : CombatAction
         }
     }
 
-    public override string GetText()
-    {
-        return user.unitName + " Attacked!";
-    }
-
     public override void ActiveFrame()
     {
 

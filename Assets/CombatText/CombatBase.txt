@@ -75,6 +75,14 @@ It's not safe for %user to go any further!
 %user tried to run away, but couldn't!
 [title=ActionEndByRetreatE]
 
+[title=ActionPray]
+%user prayed!
+[title=ActionPrayE]
+
+[title=ActionGuard]
+%user braced for an attack!
+[title=ActionGuardE]
+
 [title=EntityDie]
 %target Was Defeated!
 [title=EntityDieE]
