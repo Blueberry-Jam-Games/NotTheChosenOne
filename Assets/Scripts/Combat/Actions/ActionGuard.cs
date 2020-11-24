@@ -11,7 +11,13 @@ public class ActionGuard : CombatAction
 
     public override void Execute()
     {
-        DisplayTextAtTitle("ActionGuard");
+        if(user is CombatUnitPlayable)
+        {
+            CombatUnitPlayable cup = (CombatUnitPlayable)user;
+            DisplayTextAtTitle("ActionGuard");
+            cup.Guard();
+        }
+        Debug.LogError("Non player used player guard action");
     }
 
     public override void ActiveFrame()

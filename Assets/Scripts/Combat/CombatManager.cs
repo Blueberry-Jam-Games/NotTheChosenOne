@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class CombatManager : MonoBehaviour
 
     public GameObject hpBarRef;
 
+    //The party tension system is handled via a slider
+    private Slider tensionGauge;
+
     #region Battle Start Code
     // Start is called before the first frame update
     void Start()
@@ -34,6 +38,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Start combat maager");
         GameObject dm = GameObject.FindGameObjectWithTag("TextboxManager");
         dialogue = dm.GetComponent<RPGTalk>();
+        tensionGauge = GameObject.FindGameObjectWithTag("TensionGauge").GetComponent<Slider>();
 
         dialogue.OnNewTalk += NewTalkExists;
         dialogue.OnMadeChoice += OnMadeChoice;
@@ -52,6 +57,32 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Start coroutine");
         StartCoroutine(IntroTextLater());
     }
+
+    #region Tension Stuff
+    public float GetPartyTension()
+    {
+        return tensionGauge.value;
+    }
+
+    public void SetPartyTension(float newValue)
+    {
+        if(newValue >= tensionGauge.minValue && newValue <= tensionGauge.maxValue)
+        {
+            tensionGauge.value = newValue;
+        }
+    }
+
+    public void SetRelativeTensionGauge(float multiplier)
+    {
+        tensionGauge.value *= multiplier;
+    }
+
+    public float GetTensionModifier()
+    {
+        //-\left(x - 0.75\right) ^{ 2+1
+        return Mathf.Pow((GetPartyTension() - 0.75f), 2) + 1;
+    }
+    #endregion
 
     public RPGTalk GetDialogue()
     {

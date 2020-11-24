@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitFriend : CombatUnit
+public class UnitFriend : CombatUnitPlayable
 {
     public override string GetDialogueChoiceTitle()
     {
@@ -43,11 +43,4 @@ public class UnitFriend : CombatUnit
         Debug.LogError("Invalid choice for friend");
         return new ActionNothing(this, manager); //Failsafe to prevent softlock
     }
-
-    public override CombatAction AIResolveAction()
-    {
-        Debug.LogError("Friend AI Called Unexpectedly");
-        return null;
-    }
-
 }

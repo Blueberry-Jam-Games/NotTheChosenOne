@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitPlayer : CombatUnit
+public class UnitPlayer : CombatUnitPlayable
 {
     public GameObject arrowRef;
 
@@ -70,11 +70,5 @@ public class UnitPlayer : CombatUnit
             Debug.LogError("Class processing incorrect choice");
             return new ActionNothing(this, manager); //Failsafe to prevent softlock
         }
-    }
-
-    public override CombatAction AIResolveAction()
-    {
-        Debug.LogError("Player AI function called unexpectedly");
-        return null;
     }
 }

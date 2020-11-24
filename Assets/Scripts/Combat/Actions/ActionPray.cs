@@ -11,7 +11,12 @@ public class ActionPray : CombatAction
 
     public override void Execute()
     {
-        DisplayTextAtTitle("ActionPray");
+        if (user is CombatUnitPlayable)
+        {
+            CombatUnitPlayable cup = (CombatUnitPlayable)user;
+            DisplayTextAtTitle("ActionPray");
+            cup.UpdateTension(cup.GetTension() * 0.8f);
+        }
     }
 
     public override void ActiveFrame()

@@ -6,7 +6,7 @@ public abstract class CombatUnit : MonoBehaviour
 {
     public Facing direction;
     public string unitName;
-    public int atk, def, acc;
+    public int atk, def, acc, spd;
     public int hp, maxHP;
     protected CombatManager manager;
     protected SpriteRenderer sp;
@@ -55,6 +55,25 @@ public abstract class CombatUnit : MonoBehaviour
 
     public abstract CombatAction AIResolveAction();
 
+    #region Stat Getters
+    //Presumably you can override these on a per unit basis to achieve modifiers.
+    protected virtual int GetAttack()
+    {
+        return atk;
+    }
+
+    protected virtual int GetDefence()
+    {
+        return def;
+    }
+
+    protected virtual int GetSpeed()
+    {
+        return spd;
+    }
+    #endregion
+
+    #region Layer System
     public int GetDepth()
     {
         return sp.sortingOrder;
@@ -116,7 +135,7 @@ public abstract class CombatUnit : MonoBehaviour
             sp.sortingOrder = newSortOrder;
         }
     }
-
+    #endregion
     protected void DisplayActionTargeting()
     {
         manager.CreateTalk("Target" + manager.enemy.Count);

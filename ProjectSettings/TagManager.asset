@@ -11,6 +11,7 @@ TagManager:
   - BattleCanvas
   - TextboxManager
   - CombatManager
+  - TensionGauge
   layers:
   - Default
   - TransparentFX
