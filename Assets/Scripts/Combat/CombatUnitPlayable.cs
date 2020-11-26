@@ -11,6 +11,7 @@ public abstract class CombatUnitPlayable : CombatUnit
     {
         float atkBuff = atk;
         atkBuff *= manager.GetTensionModifier();
+        Debug.Log("Returning modified attack for " + unitName + " as " + atkBuff);
         return (int)atkBuff;
     }
 
@@ -20,6 +21,7 @@ public abstract class CombatUnitPlayable : CombatUnit
         defBuff *= manager.GetTensionModifier();
         defBuff *= guarding ? 1.5f : 1f;
         guarding = false;
+        Debug.Log("Returning modified defence for " + unitName + " as " + defBuff);
         return (int)defBuff;
     }
 
@@ -27,6 +29,7 @@ public abstract class CombatUnitPlayable : CombatUnit
     {
         float speedBuff = spd;
         speedBuff *= manager.GetTensionModifier();
+        Debug.Log("Returning modified speed for " + unitName + " as " + speedBuff);
         return (int)speedBuff;
     }
 

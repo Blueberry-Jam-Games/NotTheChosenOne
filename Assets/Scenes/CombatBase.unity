@@ -259,7 +259,7 @@ MonoBehaviour:
   atk: 2
   def: 1
   acc: 100
-  spd: 0
+  spd: 9
   hp: 20
   maxHP: 20
 --- !u!212 &77264327
@@ -1919,7 +1919,7 @@ MonoBehaviour:
   atk: 0
   def: 5
   acc: 100
-  spd: 0
+  spd: 20
   hp: 30
   maxHP: 30
 --- !u!95 &1467056087
@@ -2318,7 +2318,7 @@ MonoBehaviour:
   atk: 1
   def: 2
   acc: 100
-  spd: 0
+  spd: 15
   hp: 20
   maxHP: 20
   arrowRef: {fileID: 0}

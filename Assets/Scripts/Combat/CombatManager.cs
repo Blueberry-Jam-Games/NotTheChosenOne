@@ -79,8 +79,8 @@ public class CombatManager : MonoBehaviour
 
     public float GetTensionModifier()
     {
-        //-\left(x - 0.75\right) ^{ 2+1
-        return Mathf.Pow((GetPartyTension() - 0.75f), 2) + 1;
+        //-left(x - 0.75\right) ^{ 2+1
+        return Mathf.Pow((GetPartyTension()/tensionGauge.maxValue - 0.75f), 2) + 1;
     }
     #endregion
 

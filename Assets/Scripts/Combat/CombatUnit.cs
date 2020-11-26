@@ -6,12 +6,15 @@ public abstract class CombatUnit : MonoBehaviour
 {
     public Facing direction;
     public string unitName;
-    public int atk, def, acc, spd;
+    [SerializeField]
+    protected int atk, def, acc, spd;
     public int hp, maxHP;
     protected CombatManager manager;
     protected SpriteRenderer sp;
     protected HealthBar hpBar;
     protected Animator unitAnim;
+
+    public Dictionary<string, GameObject> actionParticles;
 
     public void Start()
     {
@@ -31,7 +34,7 @@ public abstract class CombatUnit : MonoBehaviour
     public void InflictDamage(CombatUnit source, int attackPower)
     {
         Debug.Log("InflictDamage called");
-        int damage = (source.atk * attackPower) - def;
+        int damage = (source.GetAttack() * attackPower) - GetDefence();
         hp -= damage;
         if (hp < 0) hp = 0;
         Debug.Log("Starting hp bar");
@@ -145,6 +148,20 @@ public abstract class CombatUnit : MonoBehaviour
     {
         float tgt = 0.7f + (level) * 0.1f + animCount*0.1f;
         transform.localScale = new Vector3(tgt, tgt, tgt);
+    }
+
+    public GameObject RequestParticles(string action) //TODO callbacks
+    {
+        if(actionParticles.ContainsKey(action))
+        {
+            GameObject part = Instantiate(actionParticles[action]);
+            return part;
+        } 
+        else
+        {
+            Debug.LogError("Particle " + action + " was not found for this unit.");
+            return null;
+        }
     }
 }
 
