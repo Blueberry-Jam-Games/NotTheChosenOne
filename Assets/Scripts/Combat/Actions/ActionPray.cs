@@ -35,14 +35,19 @@ public class ActionPray : CombatAction
     {
         if(dialogueDone)
         {
+            Debug.Log("Prayer Dialogue closed");
             if(animParticle == null)
             {
+                Debug.Log("Particle is null, action done");
                 actionDone = true;
             }
             else
             {
-                if(animParticle.activeInHierarchy)
+                Debug.Log("Got Particle, checking for particle end");
+                if(!animParticle.activeInHierarchy)
                 {
+                    Debug.Log("Destronying particles and flagging done");
+                    GameObject.Destroy(animParticle);
                     actionDone = true;
                 }
             }

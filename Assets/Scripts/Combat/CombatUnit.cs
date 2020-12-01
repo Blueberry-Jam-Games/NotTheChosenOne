@@ -14,7 +14,8 @@ public abstract class CombatUnit : MonoBehaviour
     protected HealthBar hpBar;
     protected Animator unitAnim;
 
-    public Dictionary<string, GameObject> actionParticles;
+    public List<ActionParticle> particles;
+    protected Dictionary<string, GameObject> actionParticles;
 
     public void Start()
     {
@@ -24,6 +25,11 @@ public abstract class CombatUnit : MonoBehaviour
         manager = GameObject.FindWithTag("CombatManager").GetComponent<CombatManager>();
         float tgt = GetTargetScale();
         transform.localScale = new Vector3(tgt, tgt, tgt);
+        actionParticles = new Dictionary<string, GameObject>();
+        foreach(ActionParticle ap in particles)
+        {
+            actionParticles.Add(ap.name, ap.particles);
+        }
     }
 
     public void ProvideHPBar(HealthBar bar)
@@ -154,9 +160,11 @@ public abstract class CombatUnit : MonoBehaviour
     {
         if(actionParticles.ContainsKey(action))
         {
-            GameObject part = Instantiate(actionParticles[action]);
+            GameObject part = Instantiate(actionParticles[action], transform, false);
+            Renderer rd = part.GetComponent<Renderer>();
+            rd.sortingOrder = GetDepth();
             return part;
-        } 
+        }
         else
         {
             Debug.LogError("Particle " + action + " was not found for this unit.");
@@ -169,4 +177,11 @@ public enum Facing
 {
     FOREWARDS,
     BACKWARDS
+}
+
+[System.Serializable]
+public struct ActionParticle
+{
+    public string name;
+    public GameObject particles;
 }

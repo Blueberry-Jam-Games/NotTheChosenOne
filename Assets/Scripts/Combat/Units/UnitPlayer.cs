@@ -39,7 +39,6 @@ public class UnitPlayer : CombatUnitPlayable
             switch (selection)
             {
                 case 0:
-                    //return new ActionAttack(this, 150, cmRef); //TODO Speed
                     //Targeting
                     if (manager.enemy.Count > 1)
                     {
