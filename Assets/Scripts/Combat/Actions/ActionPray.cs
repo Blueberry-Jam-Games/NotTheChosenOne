@@ -17,7 +17,7 @@ public class ActionPray : CombatAction
         if (user is CombatUnitPlayable)
         {
             CombatUnitPlayable cup = (CombatUnitPlayable)user;
-            animParticle = user.RequestParticles("pray");
+            animParticle = user.RequestAnimationObject("pray");
             ParticleSystem ps = animParticle.GetComponent<ParticleSystem>();
             ps.Play();
             DisplayTextAtTitle("ActionPray");

@@ -15,7 +15,7 @@ public abstract class CombatUnit : MonoBehaviour
     protected Animator unitAnim;
 
     public List<ActionParticle> particles;
-    protected Dictionary<string, GameObject> actionParticles;
+    protected Dictionary<string, GameObject> actionObjects;
 
     public void Start()
     {
@@ -25,10 +25,10 @@ public abstract class CombatUnit : MonoBehaviour
         manager = GameObject.FindWithTag("CombatManager").GetComponent<CombatManager>();
         float tgt = GetTargetScale();
         transform.localScale = new Vector3(tgt, tgt, tgt);
-        actionParticles = new Dictionary<string, GameObject>();
+        actionObjects = new Dictionary<string, GameObject>();
         foreach(ActionParticle ap in particles)
         {
-            actionParticles.Add(ap.name, ap.particles);
+            actionObjects.Add(ap.name, ap.particles);
         }
     }
 
@@ -156,13 +156,13 @@ public abstract class CombatUnit : MonoBehaviour
         transform.localScale = new Vector3(tgt, tgt, tgt);
     }
 
-    public GameObject RequestParticles(string action) //TODO callbacks
+    public GameObject RequestAnimationObject(string action, int sortingOffset = 0) //TODO callbacks
     {
-        if(actionParticles.ContainsKey(action))
+        if(actionObjects.ContainsKey(action))
         {
-            GameObject part = Instantiate(actionParticles[action], transform, false);
+            GameObject part = Instantiate(actionObjects[action], transform, false);
             Renderer rd = part.GetComponent<Renderer>();
-            rd.sortingOrder = GetDepth();
+            rd.sortingOrder = GetDepth() + sortingOffset;
             return part;
         }
         else
