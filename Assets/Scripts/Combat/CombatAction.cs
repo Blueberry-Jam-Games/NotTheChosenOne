@@ -1,10 +1,14 @@
-﻿using RPGTALK.Helper;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class CombatAction
 {
+    protected int speed;
+    protected CombatUnit user;
+    protected bool actionDone;
+    protected CombatManager manager;
+
     public CombatAction(CombatUnit user, int speed, CombatManager mngr)
     {
         this.user = user;
@@ -12,12 +16,6 @@ public abstract class CombatAction
         actionDone = false;
         manager = mngr;
     }
-
-    protected int speed;
-    protected CombatUnit user;
-    protected bool actionDone;
-    protected RPGTalk talkStore;
-    protected CombatManager manager;
     
     public int GetSpeed()
     {
@@ -34,38 +32,22 @@ public abstract class CombatAction
         return actionDone;
     }
 
-    protected void DisplayText(RPGTalk dialogue)
+    protected void DisplayTextAtTitle(string title)
     {
-        RPGTalkVariable rtv = new RPGTalkVariable
-        {
-            variableName = "%s",
-            variableValue = GetText()
-        };
-        dialogue.variables[1] = rtv;
-        dialogue.callback.AddListener(TextEnd);
-        dialogue.NewTalk("UseSkill", "UseSkillE");
-        talkStore = dialogue;
-    }
-
-    protected void DisplayTextAtTitle(RPGTalk dialogue, string title)
-    {
-        dialogue.callback.AddListener(TextEnd);
-        Debug.Log("Displaying text at title " + title + " and registering listener");
+        manager.GetDialogue().callback.AddListener(TextEnd);
         manager.ConfigureVariable("%user", user.unitName);
-        dialogue.NewTalk(title, title + "E");
-        talkStore = dialogue;
+        manager.GetDialogue().NewTalk(title, title + "E");
     }
 
-    public void TextEnd()
+    public virtual void TextEnd()
     {
-        Debug.Log("TextEnd Triggered");
         actionDone = true;
-        talkStore.callback.RemoveListener(TextEnd);
-        talkStore = null;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
     }
 
-    public abstract string GetText();
-    public abstract void Execute(RPGTalk dialogue);
+    public abstract void Execute();
+
+    public abstract void ActiveFrame();
 
     public bool StillValid()
     {
@@ -75,42 +57,122 @@ public abstract class CombatAction
 
 public class ActionAdvance : CombatAction
 {
+    float animationFrame;
+    static readonly float ANIM_LEN = 30.0f;
+    bool dialogueDone = false;
+    bool forewards;
+    int animationLayer;
+    bool succeding;
+
     public ActionAdvance(CombatUnit user, int speed, CombatManager mngr) : base(user, speed, mngr)
     {
-        
+        forewards = user.direction == Facing.FOREWARDS;
+        int destinationLayer = user.GetDepth() + (forewards ? -1 : 1);
+        succeding = destinationLayer <= manager.LevelMax && destinationLayer >= manager.LevelMin;
+        animationLayer = forewards ? user.GetDepth() - 1 : user.GetDepth();
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
-        Debug.Log("Executing Advance for " + user.unitName);
-        user.Advance();
-        DisplayTextAtTitle(dialogue, "ActionAdvance");
+        if (succeding)
+        {
+            animationFrame = 0.0f;
+            Debug.Log("Advance executing current layer " + user.GetDepth() + " target layer " + (user.direction == Facing.FOREWARDS ? user.GetDepth() - 1 : user.GetDepth() + 1));
+            DisplayTextAtTitle("ActionAdvance");
+        }
+        else
+        {
+            animationFrame = ANIM_LEN + 1;
+            DisplayTextAtTitle("ActionAdvanceFail");
+        }
     }
 
-    public override string GetText()
+    public override void TextEnd()
     {
-        Debug.Log("Advance executed");
-        return user.unitName + " Advanced!";
+        Debug.Log("advance recieved text end Triggered");
+        dialogueDone = true;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
+    }
+
+    public override void ActiveFrame()
+    {
+        if (animationFrame < ANIM_LEN) // When the animation is over, this is false
+        {
+            animationFrame++; //Else advance the animation
+            if (Mathf.Abs(animationFrame - ANIM_LEN / 2) < Mathf.Epsilon)
+            {
+                user.Advance();
+            }
+            float distance = forewards ? 1-animationFrame / ANIM_LEN : animationFrame / ANIM_LEN;
+            user.ApplyMovementAnimation(animationLayer, distance);
+        }
+        else
+        {
+            if (dialogueDone)
+            {
+                actionDone = true;
+            }
+        }
     }
 }
 
 public class ActionWithdraw : CombatAction
 {
+    float animationFrame;
+    static readonly float ANIM_LEN = 30.0f;
+    bool dialogueDone = false;
+    bool forewards;
+    int animationLayer;
+    bool succeding;
+
     public ActionWithdraw(CombatUnit user, int speed, CombatManager mngr) : base(user, speed, mngr)
     {
-
+        forewards = user.direction == Facing.FOREWARDS;
+        int destinationLayer = user.GetDepth() + (forewards ? 1 : -1);
+        succeding = destinationLayer <= manager.LevelMax && destinationLayer >= manager.LevelMin;
+        animationLayer = forewards ? user.GetDepth() : user.GetDepth() - 1;
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
-        Debug.Log("Withdraw executed");
-        user.Retreat();
-        DisplayTextAtTitle(dialogue, "ActionRetreat");
+        if (succeding)
+        {
+            animationFrame = 0.0f;
+            DisplayTextAtTitle("ActionRetreat");
+            forewards = user.direction == Facing.FOREWARDS;
+        }
+        else
+        {
+            animationFrame = ANIM_LEN + 1;
+            DisplayTextAtTitle("ActionEndByRetreat");
+        }
     }
 
-    public override string GetText()
+    public override void TextEnd()
     {
-        return user.unitName + " Retreated!";
+        dialogueDone = true;
+        manager.GetDialogue().callback.RemoveListener(TextEnd);
+    }
+
+    public override void ActiveFrame()
+    {
+        if (animationFrame < ANIM_LEN) // When the animation is over, this is false
+        {
+            animationFrame++; //Else advance the animation
+            if (Mathf.Abs(animationFrame - ANIM_LEN / 2) < Mathf.Epsilon)
+            {
+                user.Retreat();
+            }
+            float distance = forewards ? animationFrame / ANIM_LEN : 1 - animationFrame / ANIM_LEN;
+            user.ApplyMovementAnimation(animationLayer, distance);
+        }
+        else
+        {
+            if(dialogueDone)
+            {
+                actionDone = true;
+            }
+        }
     }
 }
 
@@ -121,13 +183,13 @@ public class ActionNothing : CombatAction
 
     }
 
-    public override void Execute(RPGTalk dialogue)
+    public override void Execute()
     {
         actionDone = true;
     }
 
-    public override string GetText()
+    public override void ActiveFrame()
     {
-        return "";
+
     }
 }

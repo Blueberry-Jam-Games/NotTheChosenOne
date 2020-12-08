@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class CombatManager : MonoBehaviour
     List<CombatAction> turnActions;
 
     public BattleType battleType = BattleType.HUNT;
+    public int LevelMin = 0;
+    public int LevelMax = 3;
 
     public BattleState STATE = BattleState.BEGIN;
     public ActionState ACTION_STATE = ActionState.START_NEXT;
@@ -26,6 +28,9 @@ public class CombatManager : MonoBehaviour
 
     public GameObject hpBarRef;
 
+    //The party tension system is handled via a slider
+    private Slider tensionGauge;
+
     #region Battle Start Code
     // Start is called before the first frame update
     void Start()
@@ -33,6 +38,7 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Start combat maager");
         GameObject dm = GameObject.FindGameObjectWithTag("TextboxManager");
         dialogue = dm.GetComponent<RPGTalk>();
+        tensionGauge = GameObject.FindGameObjectWithTag("TensionGauge").GetComponent<Slider>();
 
         dialogue.OnNewTalk += NewTalkExists;
         dialogue.OnMadeChoice += OnMadeChoice;
@@ -52,10 +58,40 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(IntroTextLater());
     }
 
+    #region Tension Stuff
+    public float GetPartyTension()
+    {
+        return tensionGauge.value;
+    }
+
+    public void SetPartyTension(float newValue)
+    {
+        if(newValue >= tensionGauge.minValue && newValue <= tensionGauge.maxValue)
+        {
+            tensionGauge.value = newValue;
+        }
+    }
+
+    public void SetRelativeTensionGauge(float multiplier)
+    {
+        tensionGauge.value *= multiplier;
+    }
+
+    public float GetTensionModifier()
+    {
+        //-left(x - 0.75\right) ^{ 2+1
+        return Mathf.Pow((GetPartyTension()/tensionGauge.maxValue - 0.75f), 2) + 1;
+    }
+    #endregion
+
+    public RPGTalk GetDialogue()
+    {
+        return dialogue;
+    }
+
     private void SetRPGTalkVariables()
     {
         //Title is first
-        //string title = "";
         StringBuilder titleBuilder = new StringBuilder();
 
         titleBuilder.Append(enemy[0].unitName); // Handle enemy[0] independently to prime next step
@@ -86,7 +122,8 @@ public class CombatManager : MonoBehaviour
         ConfigureVariable("%title", titleBuilder.ToString());
 
         ConfigureVariable("%player", player[0].unitName);
-        ConfigureVariable("%ally", player[1].unitName);
+        if(player.Count >= 2)
+            ConfigureVariable("%ally", player[1].unitName);
     }
 
     public void ConfigureVariable(string key, string value)
@@ -132,7 +169,6 @@ public class CombatManager : MonoBehaviour
     {
         Debug.Log("Dialogue closed");
         dialogue.callback.RemoveListener(IntroTextEnd);
-        //dialogue.NewTalk("ChooseAction", "ChooseActionE"); //What goes here?
         BeginChooseState();
     }
     #endregion
@@ -154,7 +190,7 @@ public class CombatManager : MonoBehaviour
 
     void OnMadeChoice(string questionID, int choiceNumber)
     {
-        CombatAction ca = player[choosingUnit].ResolveAction(questionID, choiceNumber, this);
+        CombatAction ca = player[choosingUnit].ResolveAction(questionID, choiceNumber);
         if(ca != null)
         {
             turnActions.Add(ca);
@@ -194,7 +230,7 @@ public class CombatManager : MonoBehaviour
     {
         foreach(CombatUnit op in enemy)
         {
-            CombatAction ca = op.AIResolveAction(this);
+            CombatAction ca = op.AIResolveAction();
             if (ca != null)
                 turnActions.Add(ca);
         }
@@ -219,7 +255,7 @@ public class CombatManager : MonoBehaviour
                 {
                     Debug.Log("Executing Next Action");
                     ACTION_STATE = ActionState.RUNNING;
-                    turnActions[0].Execute(dialogue);
+                    turnActions[0].Execute();
                 }
                 else
                 {
@@ -229,16 +265,12 @@ public class CombatManager : MonoBehaviour
             }
             else
             {
-                //dialogue.NewTalk("ChooseAction", "ChooseActionE");
                 //Choose state
                 BeginChooseState();
             }
         }
         else if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING)
         {
-            //Debug.Log("Game Running and Action State running");
-            //Debug.Log("Actions count " + turnActions.Count);
-            //if (turnActions.Count != 0) Debug.Log("Turn Action 0 " + turnActions[0].GetText() + " done? = " + turnActions[0].IsDone());
             if(turnActions.Count == 0)
             {
                 CheckKills();
@@ -253,6 +285,15 @@ public class CombatManager : MonoBehaviour
                     ACTION_STATE = ActionState.START_NEXT;
                 }
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //In battle, if we are in the animation state, allow that to run in real time so it is not bound to frame time.
+        if(STATE == BattleState.RUN && ACTION_STATE == ActionState.RUNNING && turnActions.Count != 0 && !turnActions[0].IsDone())
+        {
+            turnActions[0].ActiveFrame();
         }
     }
 

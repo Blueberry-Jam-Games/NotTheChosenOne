@@ -6,15 +6,30 @@ public abstract class CombatUnit : MonoBehaviour
 {
     public Facing direction;
     public string unitName;
-    public int atk, def, acc;
+    [SerializeField]
+    protected int atk, def, acc, spd;
     public int hp, maxHP;
+    protected CombatManager manager;
     protected SpriteRenderer sp;
     protected HealthBar hpBar;
+    protected Animator unitAnim;
+
+    public List<ActionParticle> particles;
+    protected Dictionary<string, GameObject> actionObjects;
 
     public void Start()
     {
         sp = GetComponent<SpriteRenderer>();
         hp = maxHP;
+        unitAnim = GetComponent<Animator>();
+        manager = GameObject.FindWithTag("CombatManager").GetComponent<CombatManager>();
+        float tgt = GetTargetScale();
+        transform.localScale = new Vector3(tgt, tgt, tgt);
+        actionObjects = new Dictionary<string, GameObject>();
+        foreach(ActionParticle ap in particles)
+        {
+            actionObjects.Add(ap.name, ap.particles);
+        }
     }
 
     public void ProvideHPBar(HealthBar bar)
@@ -25,7 +40,7 @@ public abstract class CombatUnit : MonoBehaviour
     public void InflictDamage(CombatUnit source, int attackPower)
     {
         Debug.Log("InflictDamage called");
-        int damage = (source.atk * attackPower) - def;
+        int damage = (source.GetAttack() * attackPower) - GetDefence();
         hp -= damage;
         if (hp < 0) hp = 0;
         Debug.Log("Starting hp bar");
@@ -45,10 +60,29 @@ public abstract class CombatUnit : MonoBehaviour
 
     public abstract string GetDialogueChoiceTitle();
 
-    public abstract CombatAction ResolveAction(string question, int selection, CombatManager cmRef);
+    public abstract CombatAction ResolveAction(string question, int selection);
 
-    public abstract CombatAction AIResolveAction(CombatManager cmRef);
+    public abstract CombatAction AIResolveAction();
 
+    #region Stat Getters
+    //Presumably you can override these on a per unit basis to achieve modifiers.
+    protected virtual int GetAttack()
+    {
+        return atk;
+    }
+
+    protected virtual int GetDefence()
+    {
+        return def;
+    }
+
+    protected virtual int GetSpeed()
+    {
+        return spd;
+    }
+    #endregion
+
+    #region Layer System
     public int GetDepth()
     {
         return sp.sortingOrder;
@@ -78,11 +112,16 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
+    public float GetTargetScale()
+    {
+        return 0.7f + GetDepth() * 0.1f;
+    }
+
     protected void MoveIn()
     {
         int newSortOrder = sp.sortingOrder;
         newSortOrder--;
-        if(newSortOrder < 0)
+        if (newSortOrder < 0)
         {
             //Flee
         }
@@ -105,10 +144,32 @@ public abstract class CombatUnit : MonoBehaviour
             sp.sortingOrder = newSortOrder;
         }
     }
-
-    protected void DisplayActionTargeting(CombatManager cmRef)
+    #endregion
+    protected void DisplayActionTargeting()
     {
-        cmRef.CreateTalk("Target" + cmRef.enemy.Count);
+        manager.CreateTalk("Target" + manager.enemy.Count);
+    }
+
+    public void ApplyMovementAnimation(int level, float animCount)
+    {
+        float tgt = 0.7f + (level) * 0.1f + animCount*0.1f;
+        transform.localScale = new Vector3(tgt, tgt, tgt);
+    }
+
+    public GameObject RequestAnimationObject(string action, int sortingOffset = 0) //TODO callbacks
+    {
+        if(actionObjects.ContainsKey(action))
+        {
+            GameObject part = Instantiate(actionObjects[action], transform, false);
+            Renderer rd = part.GetComponent<Renderer>();
+            rd.sortingOrder = GetDepth() + sortingOffset;
+            return part;
+        }
+        else
+        {
+            Debug.LogError("Particle " + action + " was not found for this unit.");
+            return null;
+        }
     }
 }
 
@@ -116,4 +177,11 @@ public enum Facing
 {
     FOREWARDS,
     BACKWARDS
+}
+
+[System.Serializable]
+public struct ActionParticle
+{
+    public string name;
+    public GameObject particles;
 }

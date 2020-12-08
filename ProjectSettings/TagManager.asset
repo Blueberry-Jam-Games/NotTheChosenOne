@@ -8,6 +8,10 @@ TagManager:
   - PersistanceController
   - LevelLoader
   - Door
+  - BattleCanvas
+  - TextboxManager
+  - CombatManager
+  - TensionGauge
   layers:
   - Default
   - TransparentFX
@@ -44,4 +48,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shadows
+    uniqueID: 3447219907
     locked: 0
