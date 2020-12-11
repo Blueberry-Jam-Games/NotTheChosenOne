@@ -55,7 +55,7 @@ public abstract class CombatUnit : MonoBehaviour
     public void HandleKill()
     {
         Destroy(hpBar.gameObject);
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     public abstract string GetDialogueChoiceTitle();
@@ -76,7 +76,7 @@ public abstract class CombatUnit : MonoBehaviour
         return def;
     }
 
-    protected virtual int GetSpeed()
+    public virtual int GetSpeed()
     {
         return spd;
     }
@@ -135,9 +135,10 @@ public abstract class CombatUnit : MonoBehaviour
     {
         int newSortOrder = sp.sortingOrder;
         newSortOrder++;
-        if (newSortOrder > 4)
+        if (newSortOrder > manager.LevelMax)
         {
-            //Flee
+            //Flee but no?
+            newSortOrder = manager.LevelMax;
         }
         else
         {
@@ -145,6 +146,7 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
     #endregion
+
     protected void DisplayActionTargeting()
     {
         manager.CreateTalk("Target" + manager.enemy.Count);

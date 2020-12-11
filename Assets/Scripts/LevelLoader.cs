@@ -34,4 +34,17 @@ public class LevelLoader : MonoBehaviour
     {
         transition.SetTrigger("End");
     }
+
+    string overworldLevel = "";
+
+    public void BeginCombat(string combatScene)
+    {
+        overworldLevel = SceneManager.GetActiveScene().name;
+        SceneManager.LoadSceneAsync(combatScene);
+    }
+
+    public void EndCombat()
+    {
+        SceneManager.LoadSceneAsync(overworldLevel);
+    }
 }

@@ -95,3 +95,7 @@ It's not safe for %user to go any further!
 You Hunted Down %title!
 Aptitude Increased!
 [title=WinHuntE]
+
+[title=PlayerFlee]
+%player and the party fled!
+[title=PlayerFleeE]

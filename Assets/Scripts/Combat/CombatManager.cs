@@ -387,7 +387,24 @@ public class CombatManager : MonoBehaviour
 
     public void EndTextEnd()
     {
+        //TODO Add options and callbacks and stuff
         Debug.Log("Return to overworld.");
+        GameObject levelLoader = GameObject.FindWithTag("LevelLoader");
+        if(levelLoader != null)
+        {
+            LevelLoader ll = levelLoader.GetComponent<LevelLoader>();
+            ll.EndCombat();
+        }
+        else
+        {
+            Debug.LogError("Scene manager could not start LevelLoader, this means you're developing right?");
+        }
+    }
+
+    public void RequestEndBattle(string dialogueTitle)
+    {
+        dialogue.callback.AddListener(EndTextEnd);
+        dialogue.NewTalk(dialogueTitle, dialogueTitle + "E");
     }
 
     private void SortTurnActions()

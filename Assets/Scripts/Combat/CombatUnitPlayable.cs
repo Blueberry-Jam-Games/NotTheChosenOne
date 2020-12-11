@@ -25,7 +25,7 @@ public abstract class CombatUnitPlayable : CombatUnit
         return (int)defBuff;
     }
 
-    protected override int GetSpeed()
+    public override int GetSpeed()
     {
         float speedBuff = spd;
         speedBuff *= manager.GetTensionModifier();
