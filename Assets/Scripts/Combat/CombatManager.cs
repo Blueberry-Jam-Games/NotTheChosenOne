@@ -153,9 +153,24 @@ public class CombatManager : MonoBehaviour
 
     private IEnumerator IntroTextLater()
     {
-        Debug.Log("Waiting for frame");
-        yield return null;
-        Debug.Log("Recieved frame");
+        Debug.Log("Combat first frame running. Delaying start 2 frames");
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("On Game Frame, fading screen");
+
+        GameObject ll = GameObject.FindWithTag("LevelLoader");
+        if (ll == null)
+        {
+            Debug.LogError("Level Loader not found, this must be a development environment.");
+        } 
+        else
+        {
+            Debug.Log("Beginning fade into combat");
+            LevelLoader loader = ll.GetComponent<LevelLoader>();
+            loader.NotifyCombatSceneReady();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
         dialogue.NewTalk(battleType.StartDialogue(), battleType.StartDialogue() + "E");
         Debug.Log("Created StartDefault Dialogue");
     }

@@ -32,7 +32,15 @@ public class LevelLoader : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        transition.SetTrigger("End");
+        //transition.SetTrigger("End");
+        if (GameObject.FindGameObjectWithTag("CombatManager") != null)
+        {
+            Debug.Log("Level loader detected combat scene");
+        } 
+        else
+        {
+            transition.SetTrigger("End");
+        }
     }
 
     string overworldLevel = "";
@@ -40,11 +48,36 @@ public class LevelLoader : MonoBehaviour
     public void BeginCombat(string combatScene)
     {
         overworldLevel = SceneManager.GetActiveScene().name;
-        SceneManager.LoadSceneAsync(combatScene);
+        StartCoroutine(EnterCombatLevel(combatScene));
+        //SceneManager.LoadSceneAsync(combatScene);
+    }
+
+    IEnumerator EnterCombatLevel(string combatLevel)
+    {
+        transition.SetTrigger("CombatForest");
+
+        yield return new WaitForSeconds(2);
+
+        SceneManager.LoadSceneAsync(combatLevel);
+    }
+
+    public void NotifyCombatSceneReady()
+    {
+        transition.SetTrigger("CombatReady");
     }
 
     public void EndCombat()
     {
+        StartCoroutine(DoCombatEnd());
+    }
+
+    IEnumerator DoCombatEnd()
+    {
+        transition.SetTrigger("Start");
+
+        yield return new WaitForSeconds(transitionTime);
+
+        //Load Scene
         SceneManager.LoadSceneAsync(overworldLevel);
     }
 }
