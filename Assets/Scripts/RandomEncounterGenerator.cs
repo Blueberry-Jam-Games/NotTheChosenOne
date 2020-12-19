@@ -17,6 +17,13 @@ public class RandomEncounterGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(FirstFrameInitialization());
+    }
+
+    IEnumerator FirstFrameInitialization()
+    {
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Random encounter system initializing");
         player = GameObject.FindWithTag("Player");
         playerRB2D = player.GetComponent<Rigidbody2D>();
     }
@@ -24,26 +31,34 @@ public class RandomEncounterGenerator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (playerRB2D.velocity.x != 0 || playerRB2D.velocity.y != 0)
+        if (player != null)
         {
-            framesSinceCombat++;
-            if (Random.Range(0, 100) % framesSinceCombat >= 99.0f)
+            if (playerRB2D.velocity.x != 0 || playerRB2D.velocity.y != 0)
             {
-                framesSinceCombat = 1.0f;
-                //New stuff is creating a semaphore and configuring it with relavent information.
-                GameObject semaphore = Instantiate(semaphoreRef);
-                CombatSemaphore comSem = semaphore.GetComponent<CombatSemaphore>();
-                int monstersToSpawn = Random.Range(0, 100);
-                for(int i = 0; i < enemies.Count; i++)
+                framesSinceCombat++;
+                if (Random.Range(0, 100) % framesSinceCombat >= 99.0f)
                 {
-                    if(monstersToSpawn % enemies[i].probability <= 1)
+                    framesSinceCombat = 1.0f;
+                    //New stuff is creating a semaphore and configuring it with relavent information.
+                    Debug.Log("Starting battle, generating enemies");
+                    GameObject semaphore = Instantiate(semaphoreRef);
+                    CombatSemaphore comSem = semaphore.GetComponent<CombatSemaphore>();
+                    DontDestroyOnLoad(semaphore); //TODO do I need this?
+                    int monstersToSpawn = Random.Range(0, 100);
+                    Debug.Log("Random number is " + monstersToSpawn);
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        comSem.enemiesToSpawn.Add(enemies[i].enemy);
+                        Debug.Log("Checking random against " + enemies[i].probability + " with result " + monstersToSpawn % enemies[i].probability);
+                        if ((monstersToSpawn % enemies[i].probability) <= 1)
+                        {
+                            Debug.Log("Monster added to encounter list");
+                            comSem.enemiesToSpawn.Add(enemies[i].enemy);
+                        }
                     }
-                }
 
-                LevelLoader ll = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
-                ll.BeginCombat("CombatBase");
+                    LevelLoader ll = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
+                    ll.BeginCombat("CombatBase");
+                }
             }
         }
     }

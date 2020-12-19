@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2425,7 +2425,51 @@ PrefabInstance:
     - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
         type: 3}
       propertyPath: enemies.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[0].enemy
+      value: 
+      objectReference: {fileID: 2165336139506911399, guid: 6a626b4803b93ee4a86f9246d82e672e,
+        type: 3}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[1].enemy
+      value: 
+      objectReference: {fileID: 2165336139506911399, guid: 6a626b4803b93ee4a86f9246d82e672e,
+        type: 3}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[2].enemy
+      value: 
+      objectReference: {fileID: 2165336139506911399, guid: 6a626b4803b93ee4a86f9246d82e672e,
+        type: 3}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[3].enemy
+      value: 
+      objectReference: {fileID: 2165336139506911399, guid: 6a626b4803b93ee4a86f9246d82e672e,
+        type: 3}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[0].probability
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[1].probability
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[2].probability
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8208137317524009714, guid: 875dc8951803c05449df15459dc11b7e,
+        type: 3}
+      propertyPath: enemies.Array.data[3].probability
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 875dc8951803c05449df15459dc11b7e, type: 3}
