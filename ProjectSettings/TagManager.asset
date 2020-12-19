@@ -12,6 +12,7 @@ TagManager:
   - TextboxManager
   - CombatManager
   - TensionGauge
+  - CombatSemaphore
   layers:
   - Default
   - TransparentFX

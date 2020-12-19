@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    float framesSinceCombat = 1;
+    //float framesSinceCombat = 1;
 
     void FixedUpdate()
     {
@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.velocity = new Vector2(moveHorizontal * moveSpeed, moveVertical * moveSpeed);
 
-        if(moveHorizontal != 0 && moveVertical != 0)
+        /*if(moveHorizontal != 0 && moveVertical != 0)
         {
             framesSinceCombat++;
             if(Random.Range(0, 100) % framesSinceCombat >= 99.0f)
@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
                 LevelLoader ll = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
                 ll.BeginCombat("CombatBase");
             }
-        }
+        }*/
     }
 
     public void RequestGoToLevel(string level, int door)
