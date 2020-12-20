@@ -7,6 +7,8 @@ public class RandomEncounterGenerator : MonoBehaviour
     [SerializeField]
     public List<EncounterData> enemies;
 
+    public List<GameObject> playerParty;
+
     public GameObject semaphoreRef;
 
     private GameObject player;
@@ -55,6 +57,12 @@ public class RandomEncounterGenerator : MonoBehaviour
                             comSem.enemiesToSpawn.Add(enemies[i].enemy);
                         }
                     }
+                    if(comSem.enemiesToSpawn.Count == 0)
+                    {
+                        comSem.enemiesToSpawn.Add(enemies[0].enemy);
+                    }
+
+                    comSem.playerParty = playerParty;
 
                     LevelLoader ll = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
                     ll.BeginCombat("CombatBase");

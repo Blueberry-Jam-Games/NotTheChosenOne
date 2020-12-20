@@ -26,6 +26,9 @@ public class CombatManager : MonoBehaviour
     public GameObject playerHealthBase;
     public GameObject opponentHealthBase;
 
+    public List<Transform> enemyLocations;
+    public List<Transform> playerLocations;
+
     public GameObject hpBarRef;
 
     //The party tension system is handled via a slider
@@ -35,6 +38,8 @@ public class CombatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SpawnUnits();
+
         Debug.Log("Start combat maager");
         GameObject dm = GameObject.FindGameObjectWithTag("TextboxManager");
         dialogue = dm.GetComponent<RPGTalk>();
@@ -56,6 +61,35 @@ public class CombatManager : MonoBehaviour
 
         Debug.Log("Start coroutine");
         StartCoroutine(IntroTextLater());
+    }
+
+    public void SpawnUnits()
+    {
+        GameObject combatSemaphore = GameObject.FindWithTag("CombatSemaphore");
+        if(combatSemaphore == null)
+        {
+            Debug.LogError("Combat Semaphore not found, you better have initialized enemies yourself");
+            return;
+        }
+        Debug.Log("Spawning units from semaphore information");
+        player = new List<CombatUnit>();
+        enemy = new List<CombatUnit>();
+
+        CombatSemaphore sem = combatSemaphore.GetComponent<CombatSemaphore>();
+
+        for(int i = 0; i < sem.playerParty.Count; i++)
+        {
+            GameObject newParyMember = Instantiate(sem.playerParty[i], playerLocations[i].position, playerLocations[i].rotation);
+            player.Add(newParyMember.GetComponent<CombatUnit>());
+        }
+
+        for(int i = 0; i < sem.enemiesToSpawn.Count; i++)
+        {
+            GameObject newEnemy = Instantiate(sem.enemiesToSpawn[i], enemyLocations[i].position, enemyLocations[i].rotation);
+            enemy.Add(newEnemy.GetComponent<CombatUnit>());
+        }
+
+        sem.MarkJobCompleted();
     }
 
     #region Tension Stuff

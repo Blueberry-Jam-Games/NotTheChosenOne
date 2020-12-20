@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CombatSemaphore : MonoBehaviour
 {
-    public List<GameObject> enemiesToSpawn;
+    public List<GameObject> enemiesToSpawn = new List<GameObject>();
+    public List<GameObject> playerParty;
 
     private void Start()
     {
-        enemiesToSpawn = new List<GameObject>();
         DontDestroyOnLoad(gameObject);
     }
 
