@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
@@ -53,5 +54,22 @@ public class PlayerMovement : MonoBehaviour
     public void OnTriggerExit2D(Collider2D collision)
     {
         recentTransport = false;
+    }
+
+    public void SavePlayer ()
+    {
+        SaveAndLoad.Save(GameObject.FindGameObjectWithTag("Player"));
+    }
+
+    public void LoadPlayer()
+    {
+        PlayerData data = SaveAndLoad.Load();
+
+        Vector3 position;
+        position.x = data.position[0];
+        position.y = data.position[1];
+        position.z = data.position[2];
+
+        transform.position = position;
     }
 }
