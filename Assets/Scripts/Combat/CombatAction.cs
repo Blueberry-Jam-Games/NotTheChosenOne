@@ -144,7 +144,8 @@ public class ActionWithdraw : CombatAction
         else
         {
             animationFrame = ANIM_LEN + 1;
-            DisplayTextAtTitle("ActionEndByRetreat");
+            //DisplayTextAtTitle("ActionEndByRetreat");
+            Flee();
         }
     }
 
@@ -172,6 +173,22 @@ public class ActionWithdraw : CombatAction
             {
                 actionDone = true;
             }
+        }
+    }
+
+    public void Flee()
+    {
+        float averageSpeed = 0;
+        foreach (CombatUnit cu in manager.enemy)
+        {
+            averageSpeed += cu.GetSpeed();
+        }
+        averageSpeed /= manager.enemy.Count;
+
+        float deltaSpeed = averageSpeed - GetSpeed();
+        if (Random.Range(0, 100) > deltaSpeed)
+        {
+            manager.RequestEndBattle("PlayerFlee");
         }
     }
 }

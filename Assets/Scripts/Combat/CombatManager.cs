@@ -26,6 +26,9 @@ public class CombatManager : MonoBehaviour
     public GameObject playerHealthBase;
     public GameObject opponentHealthBase;
 
+    public List<Transform> enemyLocations;
+    public List<Transform> playerLocations;
+
     public GameObject hpBarRef;
 
     //The party tension system is handled via a slider
@@ -35,6 +38,8 @@ public class CombatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SpawnUnits();
+
         Debug.Log("Start combat maager");
         GameObject dm = GameObject.FindGameObjectWithTag("TextboxManager");
         dialogue = dm.GetComponent<RPGTalk>();
@@ -56,6 +61,35 @@ public class CombatManager : MonoBehaviour
 
         Debug.Log("Start coroutine");
         StartCoroutine(IntroTextLater());
+    }
+
+    public void SpawnUnits()
+    {
+        GameObject combatSemaphore = GameObject.FindWithTag("CombatSemaphore");
+        if(combatSemaphore == null)
+        {
+            Debug.LogError("Combat Semaphore not found, you better have initialized enemies yourself");
+            return;
+        }
+        Debug.Log("Spawning units from semaphore information");
+        player = new List<CombatUnit>();
+        enemy = new List<CombatUnit>();
+
+        CombatSemaphore sem = combatSemaphore.GetComponent<CombatSemaphore>();
+
+        for(int i = 0; i < sem.playerParty.Count; i++)
+        {
+            GameObject newParyMember = Instantiate(sem.playerParty[i], playerLocations[i].position, playerLocations[i].rotation);
+            player.Add(newParyMember.GetComponent<CombatUnit>());
+        }
+
+        for(int i = 0; i < sem.enemiesToSpawn.Count; i++)
+        {
+            GameObject newEnemy = Instantiate(sem.enemiesToSpawn[i], enemyLocations[i].position, enemyLocations[i].rotation);
+            enemy.Add(newEnemy.GetComponent<CombatUnit>());
+        }
+
+        sem.MarkJobCompleted();
     }
 
     #region Tension Stuff
@@ -153,9 +187,24 @@ public class CombatManager : MonoBehaviour
 
     private IEnumerator IntroTextLater()
     {
-        Debug.Log("Waiting for frame");
-        yield return null;
-        Debug.Log("Recieved frame");
+        Debug.Log("Combat first frame running. Delaying start 2 frames");
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("On Game Frame, fading screen");
+
+        GameObject ll = GameObject.FindWithTag("LevelLoader");
+        if (ll == null)
+        {
+            Debug.LogError("Level Loader not found, this must be a development environment.");
+        } 
+        else
+        {
+            Debug.Log("Beginning fade into combat");
+            LevelLoader loader = ll.GetComponent<LevelLoader>();
+            loader.NotifyCombatSceneReady();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
         dialogue.NewTalk(battleType.StartDialogue(), battleType.StartDialogue() + "E");
         Debug.Log("Created StartDefault Dialogue");
     }
@@ -387,7 +436,24 @@ public class CombatManager : MonoBehaviour
 
     public void EndTextEnd()
     {
+        //TODO Add options and callbacks and stuff
         Debug.Log("Return to overworld.");
+        GameObject levelLoader = GameObject.FindWithTag("LevelLoader");
+        if(levelLoader != null)
+        {
+            LevelLoader ll = levelLoader.GetComponent<LevelLoader>();
+            ll.EndCombat();
+        }
+        else
+        {
+            Debug.LogError("Scene manager could not start LevelLoader, this means you're developing right?");
+        }
+    }
+
+    public void RequestEndBattle(string dialogueTitle)
+    {
+        dialogue.callback.AddListener(EndTextEnd);
+        dialogue.NewTalk(dialogueTitle, dialogueTitle + "E");
     }
 
     private void SortTurnActions()
