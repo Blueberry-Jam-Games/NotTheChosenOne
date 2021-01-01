@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Hosting;
-using System.Diagnostics;
 
 public static class SaveAndLoad
 {
