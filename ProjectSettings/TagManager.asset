@@ -13,6 +13,7 @@ TagManager:
   - CombatManager
   - TensionGauge
   - CombatSemaphore
+  - PlayerStart
   layers:
   - Default
   - TransparentFX

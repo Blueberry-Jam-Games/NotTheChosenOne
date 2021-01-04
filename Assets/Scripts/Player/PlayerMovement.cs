@@ -8,7 +8,10 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     public int targetDoor = 0;
     private bool recentTransport = false;
-    bool previouslyCombat = false;
+    private bool previouslyCombat = false;
+
+    // Allows locking the player in place before combat or during scene change and dialogue.
+    public bool lockedControls = false;
 
     // Start is called before the first frame update
     void Start()
@@ -16,16 +19,27 @@ public class PlayerMovement : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         rb = gameObject.GetComponent<Rigidbody2D>();
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        Debug.Log("Player Starting");
+        GameObject startpoint = GameObject.FindWithTag("PlayerStart");
+        if(startpoint != null)
+        {
+            Debug.Log("Startpoint identified, going there");
+            transform.position = startpoint.transform.position;
+        }
     }
 
     //float framesSinceCombat = 1;
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        if (!lockedControls)
+        {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-        rb.velocity = new Vector2(moveHorizontal * moveSpeed, moveVertical * moveSpeed);
+            rb.velocity = new Vector2(moveHorizontal * moveSpeed, moveVertical * moveSpeed);
+        }
 
         /*if(moveHorizontal != 0 && moveVertical != 0)
         {
