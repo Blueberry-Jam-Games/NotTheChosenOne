@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void RequestGoToLevel(string level, int door)
     {
+        Debug.Log("Request Go To Level " + level + " at door " + door + " and recentTransport = " + recentTransport);
         if (!recentTransport)
         {
             recentTransport = true;
@@ -72,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         if (doorreg != null && !previouslyCombat)
         {
             gameObject.SetActive(true);
-            Debug.Log("Player identified door system in use, going to target door.");
+            Debug.Log("Player identified door system in use, going to target door " + targetDoor);
             DoorRegistry dr = doorreg.GetComponent<DoorRegistry>();
             transform.position = dr.RequestDoor(targetDoor).transform.position;
             previouslyCombat = true;
