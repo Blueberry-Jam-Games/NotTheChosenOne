@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //Debug.Log("OnSceneLoaded: " + scene.name);
+        Debug.Log("OnSceneLoaded: " + scene.name);
         //Debug.Log(mode);
         GameObject doorreg = GameObject.FindGameObjectWithTag("DoorRegistry");
         if (doorreg != null && !previouslyCombat)
@@ -75,8 +75,8 @@ public class PlayerMovement : MonoBehaviour
             gameObject.SetActive(true);
             Debug.Log("Player identified door system in use, going to target door " + targetDoor);
             DoorRegistry dr = doorreg.GetComponent<DoorRegistry>();
+            dr.RequestDoor(targetDoor).GetComponent<DoorScript>().MarkUsedRecently();
             transform.position = dr.RequestDoor(targetDoor).transform.position;
-            previouslyCombat = true;
         }
         else if (GameObject.FindGameObjectWithTag("CombatManager") != null)
         {
@@ -86,12 +86,14 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            previouslyCombat = false;
             gameObject.SetActive(true);
         }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("Player detected leaving collider");
         recentTransport = false;
     }
 
