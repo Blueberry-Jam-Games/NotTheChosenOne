@@ -75,8 +75,8 @@ public class PlayerMovement : MonoBehaviour
             gameObject.SetActive(true);
             Debug.Log("Player identified door system in use, going to target door " + targetDoor);
             DoorRegistry dr = doorreg.GetComponent<DoorRegistry>();
-            dr.RequestDoor(targetDoor).GetComponent<DoorScript>().MarkUsedRecently();
-            transform.position = dr.RequestDoor(targetDoor).transform.position;
+            dr.RequestDoor(targetDoor).MarkUsedRecently();
+            transform.position = dr.RequestDoor(targetDoor).GetPlayerSpawnPosition();
         }
         else if (GameObject.FindGameObjectWithTag("CombatManager") != null)
         {

@@ -5,7 +5,10 @@ public class DoorScript : MonoBehaviour
     public string level;
     public int door;
 
-    public bool usedRecently = false;
+    private bool usedRecently = false;
+
+    /*If this is null, the doors transform is used instead*/
+    public Transform externalStart;
 
     public void MarkUsedRecently()
     {
@@ -30,5 +33,10 @@ public class DoorScript : MonoBehaviour
     {
         usedRecently = false;
         Debug.Log("Door to " + level + " now usable");
+    }
+
+    public Vector3 GetPlayerSpawnPosition()
+    {
+        return externalStart == null ? transform.position : externalStart.position;
     }
 }

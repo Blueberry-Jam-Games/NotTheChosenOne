@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoorRegistry : MonoBehaviour
 {
-    public List<GameObject> doors;
+    public List<DoorScript> doors;
 
-    public GameObject RequestDoor(int id)
+    public DoorScript RequestDoor(int id)
     {
         return doors[id];
     }
