@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -617,7 +617,7 @@ Transform:
   - {fileID: 510133385}
   - {fileID: 808570692}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619655159 stripped
 GameObject:
@@ -1239,6 +1239,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxOffsetX: 1
   maxOffsetY: 0.5
+  minX: -11.43
+  maxX: 11.43
+  minY: -5
+  maxY: 5
 --- !u!114 &1367410371
 MonoBehaviour:
   m_ObjectHideFlags: 0
