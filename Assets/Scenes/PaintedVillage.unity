@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 390a4f4e00000000e9714184b1479900c36678cd77e2ea87
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -1640,75 +1640,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9fa15efc4c1954aa1f58382ccea050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &5270176570283723809
+--- !u!1001 &4122399693554564381
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5270176570983102201, guid: d109fba620b3a4e44ae81f1ed13a10b4,
-        type: 3}
-      propertyPath: m_Name
-      value: MusicManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_RootOrder
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270176570983102202, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3425388569774727596, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: track
+      value: village
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425388569774727596, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: destroyOnSuccess
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113405958507098654, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_Name
+      value: MusicStarter
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d109fba620b3a4e44ae81f1ed13a10b4, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5c722cb93ba2710479fb40e07a3d81f2, type: 3}
 --- !u!1001 &8096417833948970793
 PrefabInstance:
   m_ObjectHideFlags: 0

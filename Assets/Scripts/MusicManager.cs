@@ -6,15 +6,20 @@ using UnityEngine.Audio;
 
 public class MusicManager : MonoBehaviour
 {
-    public BackgroundSong[] backgroundMusic;
+    [SerializeField]
+    public List<BackgroundSong> backgroundMusic;
 
-    public int currentTrack = -1;
+    private Dictionary<string, BackgroundSong> songmap;
+
+    public string currentTrack = "";
 
     private void Awake()
     {
+        songmap = new Dictionary<string, BackgroundSong>();
         foreach(BackgroundSong bgs in backgroundMusic)
         {
             bgs.AddSource(gameObject.AddComponent<AudioSource>());
+            songmap.Add(bgs.name, bgs);
         }
     }
 
@@ -25,15 +30,47 @@ public class MusicManager : MonoBehaviour
 
     public void PlayMusic(string name)
     {
-        if (currentTrack == -1)
+        if(currentTrack == name)
         {
-            BackgroundSong bgs = Array.Find(backgroundMusic, music=>music.name == name);
-            bgs.source.Play();
+            Debug.Log("Track " + name + " already playing, ignoring request.");
+        } 
+        else if(!songmap.ContainsKey(name))
+        {
+            Debug.LogError("Track " + name + " not found in sound manager. Did you edit the prefab?");
+        }
+        else if(currentTrack == "")
+        {
+            Debug.Log("Starting music with track " + name);
+            currentTrack = name;
+            songmap[currentTrack].source.Play();
         }
         else
         {
-            //Fade this track into next one.
+            Debug.Log("Transitioning from song " + currentTrack + " to " + name);
+            StartCoroutine(SwitchSong(name));
         }
+    }
+
+    private IEnumerator SwitchSong(string songto)
+    {
+        BackgroundSong current = songmap[currentTrack];
+        for(float i = 1; i > 0; i-=1.0f/30.0f)
+        {
+            current.source.volume = i;
+            yield return null;
+        }
+        current.source.volume = 0.0f;
+        if(current.resetOnEnd)
+        {
+            current.source.Stop();
+        }
+        else
+        {
+            current.source.Pause();
+        }
+        currentTrack = songto;
+        songmap[currentTrack].source.volume = 1.0f;
+        songmap[currentTrack].source.Play();
     }
 }
 
@@ -44,7 +81,9 @@ public class BackgroundSong
 
     public AudioClip clip;
 
-    public int volumeOverride;
+    public float volumeOverride = 1.0f;
+
+    public bool resetOnEnd = false;
 
     [HideInInspector]
     public AudioSource source;
@@ -54,5 +93,6 @@ public class BackgroundSong
         this.source = source;
         source.clip = this.clip;
         source.volume *= volumeOverride;
+        source.loop = true;
     }
 }
