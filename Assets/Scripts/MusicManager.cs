@@ -13,6 +13,8 @@ public class MusicManager : MonoBehaviour
 
     public string currentTrack = "";
 
+    public bool IsEnabled = false;
+
     private void Awake()
     {
         songmap = new Dictionary<string, BackgroundSong>();
@@ -30,24 +32,35 @@ public class MusicManager : MonoBehaviour
 
     public void PlayMusic(string name)
     {
-        if(currentTrack == name)
+        if (IsEnabled)
         {
-            Debug.Log("Track " + name + " already playing, ignoring request.");
-        } 
-        else if(!songmap.ContainsKey(name))
-        {
-            Debug.LogError("Track " + name + " not found in sound manager. Did you edit the prefab?");
+            if (currentTrack == name)
+            {
+                Debug.Log("Track " + name + " already playing, ignoring request.");
+            }
+            else if (!songmap.ContainsKey(name))
+            {
+                Debug.LogError("Track " + name + " not found in sound manager. Did you edit the prefab?");
+            }
+            else if (currentTrack == "")
+            {
+                Debug.Log("Starting music with track " + name);
+                currentTrack = name;
+                songmap[currentTrack].source.Play();
+            }
+            else
+            {
+                Debug.Log("Transitioning from song " + currentTrack + " to " + name);
+                StartCoroutine(SwitchSong(name));
+            }
         }
-        else if(currentTrack == "")
+    }
+
+    public void StopMusic()
+    {
+        if(currentTrack != "")
         {
-            Debug.Log("Starting music with track " + name);
-            currentTrack = name;
-            songmap[currentTrack].source.Play();
-        }
-        else
-        {
-            Debug.Log("Transitioning from song " + currentTrack + " to " + name);
-            StartCoroutine(SwitchSong(name));
+            songmap[currentTrack].source.Stop();
         }
     }
 

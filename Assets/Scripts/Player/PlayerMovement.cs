@@ -97,6 +97,11 @@ public class PlayerMovement : MonoBehaviour
         recentTransport = false;
     }
 
+    public void ResetDoor()
+    {
+        recentTransport = false;
+    }
+
     public void SavePlayer ()
     {
         SaveAndLoad.Save(GameObject.FindGameObjectWithTag("Player"));

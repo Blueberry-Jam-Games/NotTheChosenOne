@@ -35,6 +35,11 @@ public class DoorScript : MonoBehaviour
         Debug.Log("Door to " + level + " now usable");
     }
 
+    public void ResetDoorUsedRecently()
+    {
+        usedRecently = false;
+    }
+
     public Vector3 GetPlayerSpawnPosition()
     {
         return externalStart == null ? transform.position : externalStart.position;

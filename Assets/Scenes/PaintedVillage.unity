@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1184,12 +1184,12 @@ PrefabInstance:
     - target: {fileID: 3922822237436553127, guid: ec880fece95fc6f419ea6587bfbf420e,
         type: 3}
       propertyPath: door
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3922822237436553127, guid: ec880fece95fc6f419ea6587bfbf420e,
         type: 3}
       propertyPath: level
-      value: PaintedVillage
+      value: House
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec880fece95fc6f419ea6587bfbf420e, type: 3}

@@ -16,6 +16,7 @@ TagManager:
   - PlayerStart
   - EncounterManager
   - MusicManager
+  - StoryController
   layers:
   - Default
   - TransparentFX
