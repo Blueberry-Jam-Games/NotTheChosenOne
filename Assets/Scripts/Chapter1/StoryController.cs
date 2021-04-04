@@ -135,8 +135,15 @@ public class StoryController : MonoBehaviour
     {
         StoryStage = PlayerPrefs.GetInt(STORY_STAGE_KEY, STAGE_GET_ARROW);
         LastLevel = PlayerPrefs.GetString(LAST_LEVEL_KEY, "");
-
+        PlayerPrefs.Save();
         //Load scene without breaking things
         levelLoader.LoadNextLevel(LOADING_LEVEL);
+    }
+
+    public void ProgressStoryStage(int nextStoryStage)
+    {
+        StoryStage = nextStoryStage;
+        StoryStage = PlayerPrefs.GetInt(STORY_STAGE_KEY, StoryStage);
+        PlayerPrefs.Save();
     }
 }
