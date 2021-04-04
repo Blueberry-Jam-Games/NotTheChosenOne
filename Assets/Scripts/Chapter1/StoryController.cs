@@ -55,7 +55,8 @@ public class StoryController : MonoBehaviour
             //Load the scene needed for this part of the story:
             if (StoryStage == STAGE_GET_ARROW)
             {
-                levelLoader.LoadNextLevel("House");
+                //levelLoader.LoadNextLevel("House");
+                StartCoroutine(LoadLevelNextFrame("House"));
             }
             //Here, the palyer can be in their house, the village, or the forest
             //TODO Maybe player position?
@@ -63,11 +64,13 @@ public class StoryController : MonoBehaviour
             {
                 if (LastLevel != "")
                 {
-                    levelLoader.LoadNextLevel(LastLevel);
+                    //levelLoader.LoadNextLevel(LastLevel);
+                    StartCoroutine(LoadLevelNextFrame(LastLevel));
                 }
                 else
                 {
-                    levelLoader.LoadNextLevel("House");
+                    //levelLoader.LoadNextLevel("House");
+                    StartCoroutine(LoadLevelNextFrame("House"));
                 }
             }
         }
@@ -75,6 +78,12 @@ public class StoryController : MonoBehaviour
         LastLevel = newScene.name;
         PlayerPrefs.SetString(LAST_LEVEL_KEY, LastLevel);
         PlayerPrefs.Save();
+    }
+
+    private IEnumerator LoadLevelNextFrame(string level)
+    {
+        yield return null;
+        levelLoader.LoadNextLevel(level);
     }
 
     private void SetupTitleScreenPostLoad()
@@ -100,14 +109,16 @@ public class StoryController : MonoBehaviour
         musicManager = mm.GetComponent<MusicManager>();
         musicManager.IsEnabled = false;
         musicManager.StopMusic();
-        StartCoroutine(TitleScreenFirstFrame());
+        StartCoroutine(TitleScreenInitialization());
     }
 
-    public IEnumerator TitleScreenFirstFrame()
+    public IEnumerator TitleScreenInitialization()
     {
         yield return null;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.SetActive(false);
+        musicManager.IsEnabled = true;
+        //musicManager.PlayMusic("title");
     }
 
     public void TitleScreenNewGame()

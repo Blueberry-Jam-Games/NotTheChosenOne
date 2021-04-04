@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class StoryGetArrow : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class StoryGetArrow : MonoBehaviour
     public DoorScript exitDoor;
     public GameObject playerStart;
     public GameObject arrowItem;
+    public RPGTalk levelMasterTalk;
+
     private PlayerMovement player;
 
     // Start is called before the first frame update
@@ -34,7 +37,17 @@ public class StoryGetArrow : MonoBehaviour
             GameObject playerObj = GameObject.FindWithTag("Player");
             player = playerObj.GetComponent<PlayerMovement>();
             player.transform.position = playerStart.transform.position;
+            //Play intro cutscene
+            player.lockedControls = true;
+            levelMasterTalk.OnEndTalk += OnCutsceneEnd;
+            levelMasterTalk.NewTalk("IntroCutscene", "IntroCutsceneE");
         }
+    }
+
+    private void OnCutsceneEnd()
+    {
+        player.lockedControls = false;
+        levelMasterTalk.OnEndTalk -= OnCutsceneEnd;
     }
 
     public void ArrowRetrieved()
