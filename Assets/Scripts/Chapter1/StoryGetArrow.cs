@@ -53,7 +53,7 @@ public class StoryGetArrow : MonoBehaviour
     public void ArrowRetrieved()
     {
         Debug.Log("Retrieve arrow completed, advance to the next stage.");
-        storyController.StoryStage = StoryController.STAGE_HAS_ARROW; //TODO this has to do more
+        storyController.ProgressStoryStage(StoryController.STAGE_HAS_ARROW);
         player.ResetDoor();
         exitDoor.gameObject.SetActive(true);
         exitDoor.ResetDoorUsedRecently();

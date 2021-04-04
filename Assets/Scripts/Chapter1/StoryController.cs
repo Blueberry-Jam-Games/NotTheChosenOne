@@ -75,7 +75,10 @@ public class StoryController : MonoBehaviour
             }
         }
         //TODO be more pickey
-        LastLevel = newScene.name;
+        if (!LastLevel.Contains("Combat"))
+        {
+            LastLevel = newScene.name;
+        }
         PlayerPrefs.SetString(LAST_LEVEL_KEY, LastLevel);
         PlayerPrefs.Save();
     }
@@ -128,6 +131,7 @@ public class StoryController : MonoBehaviour
         LastLevel = "";
         PlayerPrefs.SetString(LAST_LEVEL_KEY, LastLevel);
         PlayerPrefs.Save();
+        Debug.Log("Story Controller starting new game, reset story stage to " + StoryStage + " and level " + LastLevel);
         TitleScreenStartGame();
     }
 
@@ -135,6 +139,7 @@ public class StoryController : MonoBehaviour
     {
         StoryStage = PlayerPrefs.GetInt(STORY_STAGE_KEY, STAGE_GET_ARROW);
         LastLevel = PlayerPrefs.GetString(LAST_LEVEL_KEY, "");
+        Debug.Log("Story Controller loading game state with story stage " + StoryStage + " and last level " + LastLevel);
         PlayerPrefs.Save();
         //Load scene without breaking things
         levelLoader.LoadNextLevel(LOADING_LEVEL);
@@ -143,7 +148,7 @@ public class StoryController : MonoBehaviour
     public void ProgressStoryStage(int nextStoryStage)
     {
         StoryStage = nextStoryStage;
-        StoryStage = PlayerPrefs.GetInt(STORY_STAGE_KEY, StoryStage);
+        PlayerPrefs.SetInt(STORY_STAGE_KEY, StoryStage);
         PlayerPrefs.Save();
     }
 }
