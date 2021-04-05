@@ -74,13 +74,13 @@ public class StoryController : MonoBehaviour
                 }
             }
         }
-        //TODO be more pickey
-        if (!LastLevel.Contains("Combat"))
+        //Can't save in a combat scene, also don't save the title screen
+        if (!newScene.name.Contains("Combat") && loadMode.Equals(LoadSceneMode.Single))
         {
             LastLevel = newScene.name;
+            PlayerPrefs.SetString(LAST_LEVEL_KEY, LastLevel);
+            PlayerPrefs.Save();
         }
-        PlayerPrefs.SetString(LAST_LEVEL_KEY, LastLevel);
-        PlayerPrefs.Save();
     }
 
     private IEnumerator LoadLevelNextFrame(string level)
