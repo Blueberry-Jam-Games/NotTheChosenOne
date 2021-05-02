@@ -7,7 +7,7 @@ public abstract class CombatUnitPlayable : CombatUnit
     //Modifiers for player units
     protected bool guarding = false;
 
-    protected override int GetAttack()
+    public override int GetAttack()
     {
         float atkBuff = atk;
         atkBuff *= manager.GetTensionModifier();
@@ -15,7 +15,7 @@ public abstract class CombatUnitPlayable : CombatUnit
         return (int)atkBuff;
     }
 
-    protected override int GetDefence()
+    public override int GetDefence()
     {
         float defBuff = def;
         defBuff *= manager.GetTensionModifier();

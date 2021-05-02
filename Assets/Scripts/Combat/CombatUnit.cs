@@ -17,7 +17,7 @@ public abstract class CombatUnit : MonoBehaviour
     public List<ActionParticle> particles;
     protected Dictionary<string, GameObject> actionObjects;
 
-    public void Start()
+    public virtual void Start()
     {
         sp = GetComponent<SpriteRenderer>();
         hp = maxHP;
@@ -32,12 +32,12 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
-    public void ProvideHPBar(HealthBar bar)
+    public virtual void ProvideHPBar(HealthBar bar)
     {
         hpBar = bar;
     }
 
-    public void InflictDamage(CombatUnit source, int attackPower)
+    public virtual void InflictDamage(CombatUnit source, int attackPower)
     {
         Debug.Log("InflictDamage called");
         int damage = (source.GetAttack() * attackPower) - GetDefence();
@@ -47,12 +47,12 @@ public abstract class CombatUnit : MonoBehaviour
         hpBar.DealDamage(hp);
     }
 
-    public bool IsDead()
+    public virtual bool IsDead()
     {
         return hp == 0;
     }
 
-    public void HandleKill()
+    public virtual void HandleKill()
     {
         Destroy(hpBar.gameObject);
         Destroy(gameObject);
@@ -66,12 +66,12 @@ public abstract class CombatUnit : MonoBehaviour
 
     #region Stat Getters
     //Presumably you can override these on a per unit basis to achieve modifiers.
-    protected virtual int GetAttack()
+    public virtual int GetAttack()
     {
         return atk;
     }
 
-    protected virtual int GetDefence()
+    public virtual int GetDefence()
     {
         return def;
     }
@@ -83,12 +83,12 @@ public abstract class CombatUnit : MonoBehaviour
     #endregion
 
     #region Layer System
-    public int GetDepth()
+    public virtual int GetDepth()
     {
         return sp.sortingOrder;
     }
 
-    public void Advance()
+    public virtual void Advance()
     {
         if (direction == Facing.FOREWARDS)
         {
@@ -100,7 +100,7 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
-    public void Retreat()
+    public virtual void Retreat()
     {
         if (direction == Facing.FOREWARDS)
         {
@@ -112,12 +112,12 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
-    public float GetTargetScale()
+    public virtual float GetTargetScale()
     {
         return 0.7f + GetDepth() * 0.1f;
     }
 
-    protected void MoveIn()
+    protected virtual void MoveIn()
     {
         int newSortOrder = sp.sortingOrder;
         newSortOrder--;
@@ -131,7 +131,7 @@ public abstract class CombatUnit : MonoBehaviour
         }
     }
 
-    protected void MoveOut()
+    protected virtual void MoveOut()
     {
         int newSortOrder = sp.sortingOrder;
         newSortOrder++;
@@ -147,18 +147,18 @@ public abstract class CombatUnit : MonoBehaviour
     }
     #endregion
 
-    protected void DisplayActionTargeting()
+    protected virtual void DisplayActionTargeting()
     {
         manager.CreateTalk("Target" + manager.enemy.Count);
     }
 
-    public void ApplyMovementAnimation(int level, float animCount)
+    public virtual void ApplyMovementAnimation(int level, float animCount)
     {
         float tgt = 0.7f + (level) * 0.1f + animCount*0.1f;
         transform.localScale = new Vector3(tgt, tgt, tgt);
     }
 
-    public GameObject RequestAnimationObject(string action, int sortingOffset = 0) //TODO callbacks
+    public virtual GameObject RequestAnimationObject(string action, int sortingOffset = 0) //TODO callbacks
     {
         if(actionObjects.ContainsKey(action))
         {
