@@ -43,13 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35176df9f1dfca4e844d0c49eace7d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  persistantObjects:
-  - tag: GameController
-    target: {fileID: 8161228000419138541, guid: ff8a35705b8fe984ba822d7cc83a6936,
-      type: 3}
-  - tag: Player
-    target: {fileID: 2235414772449842822, guid: c5dd411d0af610048b65a6c50ef8ba01,
-      type: 3}
+  awakePersistantObjects:
   - tag: LevelLoader
     target: {fileID: 5226415152512361998, guid: 450b51a35cfe07a409cc75339d2592b4,
+      type: 3}
+  - tag: MusicManager
+    target: {fileID: 5270176570983102201, guid: d109fba620b3a4e44ae81f1ed13a10b4,
+      type: 3}
+  startPersistantObjects:
+  - tag: Player
+    target: {fileID: 2235414772449842822, guid: c5dd411d0af610048b65a6c50ef8ba01,
       type: 3}

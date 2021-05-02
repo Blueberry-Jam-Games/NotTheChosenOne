@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -389,7 +389,7 @@ Transform:
   - {fileID: 245258600}
   - {fileID: 1467056085}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &245258599
 GameObject:
@@ -685,7 +685,7 @@ RectTransform:
   - {fileID: 573123816}
   - {fileID: 2089127437}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -938,7 +938,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &850746051
 GameObject:
@@ -971,7 +971,7 @@ Transform:
   - {fileID: 1492250514}
   - {fileID: 1081882264}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &866088758
 GameObject:
@@ -1047,6 +1047,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866088758}
   m_CullTransparentMesh: 0
+--- !u!1001 &902203552
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.419354
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.9354838
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316300992221575510, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425388569774727596, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: track
+      value: battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425388569774727596, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: destroyOnSuccess
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8113405958507098654, guid: 5c722cb93ba2710479fb40e07a3d81f2,
+        type: 3}
+      propertyPath: m_Name
+      value: MusicStarter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5c722cb93ba2710479fb40e07a3d81f2, type: 3}
 --- !u!1 &910457421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,7 +1161,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 390a4f4e00000000e9714184b1479900c36678cd77e2ea87
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -1117,7 +1196,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &932355502
 GameObject:
@@ -1265,7 +1344,7 @@ Transform:
   - {fileID: 653233478}
   - {fileID: 1571870233}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1001115475
 GameObject:
@@ -1479,7 +1558,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1125769674
 MonoBehaviour:
@@ -1579,7 +1658,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1688845839}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1603,7 +1682,7 @@ RectTransform:
   m_Children:
   - {fileID: 937168545}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1893,7 +1972,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1467056085 stripped
 Transform:
@@ -2194,8 +2273,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1313802809
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6c9e3d1f1190148438355b52259f7528, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -70,6 +70,11 @@ public class RandomEncounterGenerator : MonoBehaviour
             }
         }
     }
+
+    public void OnEnable()
+    {
+        framesSinceCombat = 1.0f;
+    }
 }
 
 [System.Serializable]

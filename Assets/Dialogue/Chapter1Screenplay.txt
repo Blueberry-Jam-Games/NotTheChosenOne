@@ -1,0 +1,16 @@
+[title=IntroCutscene]
+***Yawn***
+***Yaaaaawwwwwnnnnn***
+Alright, I'm awake.\nI guess I had better go hunting for dinner tonight. Can't let the village starve.\nI just need to get my bow and I'll be ready to go!
+[title=IntroCutsceneE]
+
+[title=GetBow]
+Alright, now I've got my bow it's time to go hunting.
+[title=GetBowE]
+
+[title=HometownNPC]
+Oh hey! Going hunting?
+That wind storm last night knocked down a lot of trees.
+My grandma is trying to figure out if there was some kind of pattern.
+What do I know, it's just the ramblings of some old lady.
+[title=HometownNPCE]

@@ -13,6 +13,10 @@ TagManager:
   - CombatManager
   - TensionGauge
   - CombatSemaphore
+  - PlayerStart
+  - EncounterManager
+  - MusicManager
+  - StoryController
   layers:
   - Default
   - TransparentFX
@@ -47,9 +51,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackgroundPainting
+    uniqueID: 1313802809
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Player
+    uniqueID: 2218881513
+    locked: 0
+  - name: Grass
+    uniqueID: 10045361
+    locked: 0
   - name: Shadows
     uniqueID: 3447219907
+    locked: 0
+  - name: AboveShadows
+    uniqueID: 2280317559
     locked: 0

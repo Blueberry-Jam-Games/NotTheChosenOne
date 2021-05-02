@@ -6,6 +6,9 @@ public class FollowCamera : MonoBehaviour
     public float maxOffsetX = 1;
     public float maxOffsetY = .5f;
 
+    public float minX, maxX;
+    public float minY, maxY;
+
     private Vector3 offset;            //Private variable to store the offset distance between the player and camera
 
     // Use this for initialization
@@ -56,6 +59,20 @@ public class FollowCamera : MonoBehaviour
             }
         }
 
+        if (minX != maxX)
+        {
+            newX = limit(newX, minX, maxX);
+        }
+        if(minY != maxY)
+        {
+            newY = limit(newY, minY, maxY);
+        }
+
         transform.SetPositionAndRotation(new Vector3(newX, newY, transform.position.z), transform.rotation);
+    }
+
+    float limit(float fin, float min, float max)
+    {
+        return fin < min ? min : fin > max ? max : fin;
     }
 }

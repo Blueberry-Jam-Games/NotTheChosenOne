@@ -22,10 +22,12 @@ public class LevelLoader : MonoBehaviour
     {
         //Play Animation
         transition.SetTrigger("Start");
+        Debug.Log("Loading level " + level + " applying cover");
 
         //Wait
         yield return new WaitForSeconds(transitionTime);
 
+        Debug.Log("Cover applied, beginning async load");
         //Load Scene
         SceneManager.LoadSceneAsync(level);
     }
@@ -37,8 +39,9 @@ public class LevelLoader : MonoBehaviour
         {
             Debug.Log("Level loader detected combat scene");
         } 
-        else
+        else if(mode == LoadSceneMode.Single)
         {
+            Debug.Log("Level loader detected scene loaded, removing cover");
             transition.SetTrigger("End");
         }
     }
